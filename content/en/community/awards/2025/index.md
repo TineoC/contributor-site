@@ -10,8 +10,8 @@ By Special Interest Group (SIG) with listed message/nomination reason
 
 #### API Machinery
 
-*Marek Siarkowicz, [@serathius](https://github.com/serathius)*  
-Marek’s contributions to the Consistent Reads from Cache project over the past few years have been truly inspiring. This initiative required deep expertise in both etcd and Kubernetes, coupled with a steadfast determination to see it through to completion. Marek’s work has led to one of the most significant scalability improvements in recent years. Without his dedication and skill, this achievement would not have been possible.
+*Aaron Prindle, [@aaron-prindle](https://github.com/aaron-prindle)* 
+Aaron has been a driving force behind the new declarative validation framework in Kubernetes. His leadership and technical contributions to KEP-5073, which introduces validation-gen, have been instrumental in moving Kubernetes API validation from complex, handwritten Go code to a more maintainable and author-friendly declarative model. Over the last year, Aaron's work has established the foundational infrastructure for this transition, including the creation of the validation-gen code generator. This work significantly lowers the barrier for new contributors and improves the overall quality and consistency of the Kubernetes API, making it amore robust and accessible project for the entire community.
 
 *Lukasz Szaszkiewicz, [@polynomial](https://github.com/p0lyn0mial)*  
 @polynomial  for his work on streaming lists.  It's been a long road producing new API mechanics, designing drop-in compatible clients to leverage the new construct, and building new feature gating mechanisms to control enablement.  Great job making a feature in a way that our ecosystem can adopt.
