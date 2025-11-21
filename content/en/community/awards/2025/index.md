@@ -10,7 +10,7 @@ By Special Interest Group (SIG) with listed message/nomination reason
 
 #### API Machinery
 
-*Aaron Prindle, [@aaron-prindle](https://github.com/aaron-prindle)* 
+*Aaron Prindle, [@aaron-prindle](https://github.com/aaron-prindle)*  
 Aaron has been a driving force behind the new declarative validation framework in Kubernetes. His leadership and technical contributions to KEP-5073, which introduces validation-gen, have been instrumental in moving Kubernetes API validation from complex, handwritten Go code to a more maintainable and author-friendly declarative model. Over the last year, Aaron's work has established the foundational infrastructure for this transition, including the creation of the validation-gen code generator. This work significantly lowers the barrier for new contributors and improves the overall quality and consistency of the Kubernetes API, making it amore robust and accessible project for the entire community.
 
 *Lukasz Szaszkiewicz, [@polynomial](https://github.com/p0lyn0mial)*  
