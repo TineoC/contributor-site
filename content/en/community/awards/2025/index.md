@@ -53,19 +53,19 @@ We are happy to use this opportunity to recognize Takuma for being always availa
 
 #### Contributor Experience
 
-*Arpit Agrawal*  
-Arpit has been a steady contributor to the Contributor Comms team for years and stepped up even further this year by launching his own video initiative. He experimented with new formats, then shared those lessons with others, including presenting new-contributor orientation content at local community events. His work has helped welcome and inform many new contributors.
+*Arpit Agrawal, [@Hii-Arpit](https://github.com/Hii-Arpit)*  
+Arpit has been meaningfully contributing to the ContributorComms team for years now. This year, he has particularly stepped up to explore running his own video project. He's created a variety of types of content and built on what he's learned to help others by presenting the New ContributorOrientation content at local community events. Thank you,Arpit, for your contributions to the community!
 
-*Sayak Mukhopadhyay*  
-Sayak led the long-needed Hugo/Docsy upgrade for the Kubernetes contributor site and fixed local preview tooling, significantly improving contributor workflow. His efforts modernized the contributor docs stack and made it easier for people to iterate on site changes.
+*Sayak Mukhopadhyay, [@SayakMukhopadhyay](https://github.com/SayakMukhopadhyay)*  
+For driving the long-overdue Hugo/Docsy upgrade on the Kubernetes contributor site and fixing local website previews to improve the contributor workflow.
 
 #### Docs
 
-*Sayak Mukhopadhyay*  
-Sayak is also recognized by SIG Docs for aligning the Kubernetes website with upstream Docsy. This has required ongoing refactors, upgrades, and dependency updates, all done while continuing to support the docs through fast-moving release cycles. His expertise has been essential to keeping the site robust and up to date.
+*Sayak Mukhopadhyay, [@SayakMukhopadhyay](https://github.com/SayakMukhopadhyay)*  
+For his excellent work in aligning the Kubernetes website with upstream Docsy, which has required continuous refactors and upgrades. Sayak's expertise has been extremely needed to make our documentation more robust, and he has proceeded whilst ensuring we’re on the latest environment and dependency versions, all while continuing to support our docs throughout the constant changes we experience during each release cycle.
 
 *Graziano Casto*  
-Graziano has become a co-maintainer of the Kubernetes blog through consistent, thoughtful work. His reviews are clear and helpful, and he has mastered the blog guidelines, becoming a go-to authority within the small SIG Docs blog team. His leadership has greatly strengthened our blogging capability.
+For his helpful work on the Kubernetes Blog, which has leadhim to become a co-maintainer of our blog in a helpful,efficient, and kind manner. Graziano's reviews for authors are well-received, and he has generally mastered our blog guidelines to become a definitive authority within our small SIG Docs Blog team, which was sorely needed. We're incredibly grateful for Graziano's step-up into blog maintainer for the SIG.
 
 #### etcd
 
