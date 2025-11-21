@@ -6,7 +6,7 @@ slug: "2025"
 description: "2025 Contributor Award Recipients"
 ---
 
-By Special Interest Group (SIG) with listed message/nomination reason   
+By Special Interest Group (SIG) with listed message/nomination reason
 
 #### API Machinery
 
@@ -46,15 +46,15 @@ Outstanding project maintainer (VPA) and HPA resurrector.
 #### Cluster Lifecycle
 
 *Bing Hongtao, [@HirazawaUi](https://github.com/HirazawaUi)*  
-HirazawaUi has excelled at being a new kubeadm contributor for SIG Cluster Lifecycle. HirazawaUi climbed the contributor ladder of being first a reviewer and then an approver very fast,while actively reviewing new PRs and participating in important discussions.
+HirazawaUi has excelled at being a new kubeadm contributor for SIG Cluster Lifecycle. HirazawaUi climbed the contributor ladder of being first a reviewer and then an approver very fast, while actively reviewing new PRs and participating in important discussions.
 
 *Takuma Shibuya, [@sivchari](https://github.com/sivchari)*  
-We are happy to use this opportunity to recognize Takuma for being always available to help and for the impact he made in the Cluster API project
+We are happy to use this opportunity to recognize Takuma for being always available to help and for the impact he made in the Cluster API project.
 
 #### Contributor Experience
 
 *Arpit Agrawal, [@Hii-Arpit](https://github.com/Hii-Arpit)*  
-Arpit has been meaningfully contributing to the Contributor Comms team for years now. This year, he has particularly stepped up to explore running his own video project. He's created a variety of types of content and built on what he's learned to help others by presenting the New ContributorOrientation content at local community events. Thank you,Arpit, for your contributions to the community!
+Arpit has been meaningfully contributing to the Contributor Comms team for years now. This year, he has particularly stepped up to explore running his own video project. He's created a variety of types of content and built on what he's learned to help others by presenting the New Contributor Orientation content at local community events. Thank you, Arpit, for your contributions to the community!
 
 *Sayak Mukhopadhyay, [@SayakMukhopadhyay](https://github.com/SayakMukhopadhyay)*  
 For driving the long-overdue Hugo/Docsy upgrade on the Kubernetes contributor site and fixing local website previews to improve the contributor workflow.
