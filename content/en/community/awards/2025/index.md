@@ -16,7 +16,7 @@ Aaron has been a driving force behind the new declarative validation framework i
 *Joel Speed, [@JoelSpeed](https://github.com/JoelSpeed)*  
 We are pleased to nominate Joel Speed for his valuable contributions to the kube-api-linter project. This tool is essential for ensuring the quality and consistency of Kubernetes-style APIs, and Joel's recent work has been vital to its continued improvement. His contributions over the last year have helped enhance the linter's capabilities, making it easier for developers to identify and correct issues in their custom resources and controllers. Joel's dedication to improving the tooling around API development demonstrates a strong commitment to the health of the broader Kubernetes ecosystem and helps developers build better, more reliable extensions for Kubernetes.
 
-*Yongrui Lin [@yongruilin](https://github.com/yongruilin)*  
+*Yongrui Lin, [@yongruilin](https://github.com/yongruilin)*  
 We nominate Yongrui Lin for his significant and detailed contributions to the implementation of declarative validation in Kubernetes. Working closely on KEP-5073, Yongrui has been pivotal in the hands-on development and refinement of the validation-gen tool and its integration into the Kubernetes codebase. His numerous commits over the past 12 months reflect a deep commitment to improving the API validation process. Yongrui's technical diligence and collaborative efforts have been crucial in turning the vision of a declarative validation system into a tangible reality, directly impacting the future maintainability and stability of the Kubernetes API.
 
 #### Architecture
