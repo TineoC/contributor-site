@@ -1,9 +1,9 @@
 ---
-title: "2024 Awards"
+title: "2025 Awards"
 weight: 1
 type: docs
-slug: "2024"
-description: "2024 Contributor Award Recipients"
+slug: "2025"
+description: "2025 Contributor Award Recipients"
 ---
 
 By Special Interest Group (SIG) with listed message/nomination reason   
