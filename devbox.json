@@ -1,0 +1,39 @@
+{
+  "packages": [
+    "nodejs_20",
+    "git",
+    "hugo@0.133.1",
+    "gnugrep",
+    "gnused",
+    "findutils",
+    "coreutils",
+    "gnutar",
+    "gnumake"
+  ],
+  "shell": {
+    "init_hook": [
+      "echo '🚀 Setting up contributor-site development environment...'",
+      "echo ''",
+      "# Install npm dependencies (including docsy theme)",
+      "echo '📦 Installing npm packages (docsy, postcss-cli, autoprefixer)...'",
+      "npm ci",
+      "echo ''",
+      "# Generate external content",
+      "echo '📝 Generating external content...'",
+      "make gen-content",
+      "echo ''",
+      "echo '✅ Development environment ready!'",
+      "echo ''",
+      "echo 'Quick commands:'",
+      "echo '  devbox run dev    - Start Hugo development server'",
+      "echo '  make server       - Start Hugo development server (alternative)'",
+      "echo '  make gen-content  - Regenerate external content'",
+      "echo ''"
+    ],
+    "scripts": {
+      "dev": "make server",
+      "build": "make render",
+      "clean": "make clean-all"
+    }
+  }
+}
