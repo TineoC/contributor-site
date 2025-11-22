@@ -123,7 +123,7 @@ CY Jiang has made numerous contributions to the Kubernetes scheduler and has als
 #### Storage
 
 *Drew Sirenko, [@AndrewSirenko](https://github.com/AndrewSirenko)*   
-Has been a key contributor to the VolumeAttributesClass feature, developing and refining it through comprehensive end-to-end testing and diligent bug fixes, significantly enhancing its stability and functionality. He has also supported Kubernetes CSI sidecar releases, addressing and resolving bugs to improve the reliability of Kubernetes Storage.
+Drew Sirenko has been a key contributor to the VolumeAttributesClass feature, developing and refining it through comprehensive end-to-end testing and diligent bug fixes, significantly enhancing its stability and functionality. He has also supported Kubernetes CSI sidecar releases, addressing and resolving bugs to improve the reliability of Kubernetes Storage.
 
 *Sunny Song, [@sunnylovestiramisu](https://github.com/sunnylovestiramisu)*   
 Sunny has led the design and implementation of the VolumeAttributesClass feature, a major enhancement targeted for GA in Kubernetes 1.34, coordinating with multiple cloud providers and storage vendors. She was also instrumental in bringing volume populators to GA in Kubernetes 1.33. In addition, she continues to support CSI sidecar releases and tackle important bug fixes, further strengthening Kubernetes storage capabilities.
