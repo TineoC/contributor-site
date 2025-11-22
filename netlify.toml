@@ -1,5 +1,5 @@
 [build]
-image="ubuntu-24.04"
+image = "ubuntu-22.04"
 publish = "public"
 command = "make production-build"
 
