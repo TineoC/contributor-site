@@ -9,22 +9,21 @@ the `DataTable` initialization in `partials/hooks/body-end.html`
 
 */}}
 {{- $kepData := "" -}}
-{{- $remote := try (resources.GetRemote $kepDataSourceUrl) -}}
-{{- with $remote.Err -}}
+{{- with resources.GetRemote $kepDataSourceUrl -}}
+{{- with .Err -}}
 {{- if eq hugo.Environment "production" }}
 {{ errorf "Unable to load KEPs data: %s" . }}
 {{- else -}}
 {{- warnf "Cannot load KEPs data: %s" . -}}
 {{- end -}}
 {{- else -}}
-{{- with $remote.Value -}}
 {{- $kepData = .Content | transform.Unmarshal -}}
+{{- end -}}
 {{- else -}}
 {{- if eq hugo.Environment "production" }}
 {{- errorf "Unable to load KEPs data: %s (source URL was %q)" "Resource is nil" $kepDataSourceUrl -}}
 {{- else -}}
 {{- warnf "Cannot load KEPs data: %s" "Resource is nil" -}}
-{{- end -}}
 {{- end -}}
 {{- end -}}
 
