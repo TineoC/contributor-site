@@ -70,7 +70,7 @@ For his helpful work on the Kubernetes Blog, which has led him to become a co-ma
 #### etcd
 
 *Joshua James, [@joshjms](https://github.com/joshjms)*  
-Documented the process for bumping etcd versions in Kubernetes, has been working toward unifying etcd image management in Kubernetes, and has contributed to various project chores such as release and dependency updates.
+Joshua documented the process for bumping etcd versions in Kubernetes, has been working toward unifying etcd image management in Kubernetes, and has contributed to various project chores such as release and dependency updates.
 
 *Nont Thanonchai, [@nwnt](https://github.com/nwnt)*   
 Nont’s work has been critical to improving etcd’s robustness and correctness. As the primary contributor behind the Antithesis testing effort, he helped uncover serious issues—including a bug where a watch on a future revision could receive past events. His focus on discovering subtle, complex problems has had a lasting positive impact on etcd’s reliability.
