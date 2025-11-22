@@ -1,30 +1,31 @@
 {{- $kepDataSourceUrl := "https://storage.googleapis.com/k8s-keps/keps.json" -}}
 {{/*
-  Datatables is used in the page to enrich the list of KEPs.
-  The stylesheets and scripts required are in `partials/hooks/head-end.html`
-  and `partials/hooks/body-end.html` respectively.
+Datatables is used in the page to enrich the list of KEPs.
+The stylesheets and scripts required are in `partials/hooks/head-end.html`
+and `partials/hooks/body-end.html` respectively.
 
-  Note: In order to configure Datatable parameters for changing any behavior, edit
-  the `DataTable` initialization in `partials/hooks/body-end.html`
+Note: In order to configure Datatable parameters for changing any behavior, edit
+the `DataTable` initialization in `partials/hooks/body-end.html`
 
 */}}
 {{- $kepData := "" -}}
-{{- with resources.GetRemote $kepDataSourceUrl -}}
-  {{- with .Err -}}
-    {{- if eq hugo.Environment "production" }}
-      {{ errorf "Unable to load CVE Feed: %s" }}
-    {{- else -}}
-      {{- warnf "Cannot load CVE Feed: %s" -}}
-    {{- end -}}
-  {{- else -}}
-    {{- $kepData = .Content | transform.Unmarshal -}}
-  {{- end -}}
+{{- $remote := try (resources.GetRemote $kepDataSourceUrl) -}}
+{{- with $remote.Err -}}
+{{- if eq hugo.Environment "production" }}
+{{ errorf "Unable to load KEPs data: %s" . }}
 {{- else -}}
-  {{- if eq hugo.Environment "production" }}
-    {{- errorf "Unable to load CVE Feed: %s (source URL was %q)" $kepDataSourceUrl -}}
-  {{- else -}}
-    {{- warnf "Cannot load CVE Feed: %s" -}}
-  {{- end -}}
+{{- warnf "Cannot load KEPs data: %s" . -}}
+{{- end -}}
+{{- else -}}
+{{- with $remote.Value -}}
+{{- $kepData = .Content | transform.Unmarshal -}}
+{{- else -}}
+{{- if eq hugo.Environment "production" }}
+{{- errorf "Unable to load KEPs data: %s (source URL was %q)" "Resource is nil" $kepDataSourceUrl -}}
+{{- else -}}
+{{- warnf "Cannot load KEPs data: %s" "Resource is nil" -}}
+{{- end -}}
+{{- end -}}
 {{- end -}}
 
 <div>
@@ -42,53 +43,54 @@
     </thead>
     <tbody>
       {{range $index, $data := $kepData}}
-          <tr>
-            <td>
-              <a href="https://features.k8s.io/{{ $data.kepNumber }}">
-                {{ printf "%s" $data.kepNumber }}
-              </a>
-            </td>
-            <td>
-              <a href="https://github.com/kubernetes/enhancements/tree/master/keps/{{$data.owningSig}}/{{$data.name}}#summary">
-                {{ printf "%s" $data.title }}
-              </a>
-            </td>
-            <td>
-              <a href=" https://github.com/kubernetes/community/tree/master/{{ $data.owningSig }}">
-                {{ strings.TrimPrefix "sig-" $data.owningSig | humanize | title }}
-              </a>
-            </td>
-            <td>
-              {{ range $index, $author := $data.authors }}
-              {{- if $index -}}, {{ end -}}
-              <a href="https://github.com/{{ trim $author "@" }}">
-                <span class="github-user">@{{ trim $author "@" }}</span>
-              </a>
-              {{ end }}
-            </td>
-            <td>
-                {{ if $data.creationDate }}
-                  <time datetime="{{ $data.creationDate }}">{{ $data.creationDate }}</time>
-                {{ end }}
-            </td>
-            <td>
-                {{ if $data.lastUpdated }}
-                  <time datetime="{{ $data.lastUpdated }}">{{ $data.lastUpdated }}</time>
-                {{ end }}
-              </span>
-            </td>
-            <td>
-              <ul class="list-unstyled">
-                {{ range $stage, $milestone := $data.milestone }}
-                  {{ if $milestone }}
-                  <li>
-                    {{ $stage }}:<span class="kep-milestone">{{ $milestone }}</span>
-                  </li>
-                  {{ end }}
-                {{ end }}
-              </ul>
-            </td>
-          </tr>
+      <tr>
+        <td>
+          <a href="https://features.k8s.io/{{ $data.kepNumber }}">
+            {{ printf "%s" $data.kepNumber }}
+          </a>
+        </td>
+        <td>
+          <a
+            href="https://github.com/kubernetes/enhancements/tree/master/keps/{{$data.owningSig}}/{{$data.name}}#summary">
+            {{ printf "%s" $data.title }}
+          </a>
+        </td>
+        <td>
+          <a href=" https://github.com/kubernetes/community/tree/master/{{ $data.owningSig }}">
+            {{ strings.TrimPrefix "sig-" $data.owningSig | humanize | title }}
+          </a>
+        </td>
+        <td>
+          {{ range $index, $author := $data.authors }}
+          {{- if $index -}}, {{ end -}}
+          <a href="https://github.com/{{ trim $author " @" }}">
+            <span class="github-user">@{{ trim $author "@" }}</span>
+          </a>
+          {{ end }}
+        </td>
+        <td>
+          {{ if $data.creationDate }}
+          <time datetime="{{ $data.creationDate }}">{{ $data.creationDate }}</time>
+          {{ end }}
+        </td>
+        <td>
+          {{ if $data.lastUpdated }}
+          <time datetime="{{ $data.lastUpdated }}">{{ $data.lastUpdated }}</time>
+          {{ end }}
+          </span>
+        </td>
+        <td>
+          <ul class="list-unstyled">
+            {{ range $stage, $milestone := $data.milestone }}
+            {{ if $milestone }}
+            <li>
+              {{ $stage }}:<span class="kep-milestone">{{ $milestone }}</span>
+            </li>
+            {{ end }}
+            {{ end }}
+          </ul>
+        </td>
+      </tr>
       {{ end }}
     </tbody>
   </table>
