@@ -97,6 +97,11 @@ resampleFilter = "CatmullRom"
     
     # Developer relevant links. These will show up on right side of footer and in the community page if you have one.
     [[params.links.developer]]
+      name = "LinkedIn"
+      url = "https://www.linkedin.com/company/kubernetes"
+      icon = "fab fa-linkedin"
+      desc = "Kubernetes on LinkedIn"
+    [[params.links.developer]]
       name = "GitHub"
       url = "https://github.com/kubernetes/community"
       icon = "fab fa-github"
