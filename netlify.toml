@@ -39,3 +39,15 @@ from = "https://kubernetes.dev/*"
 to =  "https://www.kubernetes.dev/:splat"
 status = 301
 force = true
+
+[[redirects]]
+  from = "/"
+  to = "/en/"
+  status = 302
+  conditions = {Language = ["en"]}
+
+[[redirects]]
+  from = "/"
+  to = "/es/"
+  status = 302
+  conditions = {Language = ["es"]}

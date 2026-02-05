@@ -26,7 +26,6 @@ if ! git -c safe.directory="$( pwd )" rev-parse --show-toplevel >/dev/null; then
 fi
 
 readonly REPO_ROOT="$(git -c safe.directory="$( pwd )" rev-parse --show-toplevel)"
-readonly CONTENT_PATH="/content/en"
 readonly EXTERNAL_SOURCES="${EXTERNAL_SOURCES:-"$REPO_ROOT/external-sources"}"
 readonly HEADER_TMPLT="---\ntitle: __TITLE__\n---\n"
 readonly DEBUG=${DEBUG:-"false"}
@@ -317,48 +316,58 @@ insert_header() {
 
 
 main() {
-  local TARGET
-
-  if [ "$IN_CONTAINER" = "true" ]; then
-    TARGET="${CONTAINER_TMP_SRC}${CONTENT_PATH}"
-  else
-    TARGET="${REPO_ROOT}${CONTENT_PATH}"
-  fi
-
   mkdir $VERBOSE -p "$TEMP_DIR"
 
-  local repos=() # array of kubernetes repos containing content to be synced
-  local srcs=() # array of sources of content to be synced 
-  local dsts=() # array of destinations for the content to be synced to
-
-  # Files within the EXTERNAL_SOURCES directory should be csv formatted with the
-  # directory being the GitHub org and name of the file being the repo name
-  # (e.g. kubernetes/community), and the  content being the path to the content
-  # to be synced within the repo to the to the destination within the HUGO
-  # content directory.
-  # Example:
-  # file-path: external-sources/kubernetes/community
-  # "/contributors/guide", "/guide" 
-
-  shopt -s globstar dotglob
-  for repo in "${EXTERNAL_SOURCES}"/**; do
-    if [[ -f "$repo" ]]; then
-      repos+=("$repo")
+  for lang_dir in "${EXTERNAL_SOURCES}"/*; do
+    if [[ ! -d "$lang_dir" ]]; then
+      continue
     fi
-  done
-  shopt -u globstar
 
-  # populate the arrays with information parsed from files in ${EXTERNAL_SOURCES}
-  for repo in "${repos[@]}"; do
-    local org
-    org="$(basename "$(dirname "$repo")")"
-    # shellcheck disable=SC2094 # false detection on read/write to $repo at the same time
-    while IFS=, read -re src dst || [ -n "$src" ]; do
-      srcs+=("/$org/$(basename "$repo")$(echo "$src" | $SED -e 's/^\"//g;s/\"$//g')")
-      dsts+=("$(echo "$dst" | $SED -e 's/^\"//g;s/\"$//g')")
-    done < "$repo"
-    init_src "https://github.com/$org/$(basename "$repo").git" "${TEMP_DIR}/$org/$(basename "$repo")"
-  done
+    local lang
+    lang=$(basename "$lang_dir")
+    local content_path="/content/${lang}"
+    local TARGET
+
+    if [ "$IN_CONTAINER" = "true" ]; then
+      TARGET="${CONTAINER_TMP_SRC}${content_path}"
+    else
+      TARGET="${REPO_ROOT}${content_path}"
+    fi
+
+    echo "Processing content for language: ${lang}" 1>&2
+
+    local repos=() # array of kubernetes repos containing content to be synced
+    local srcs=() # array of sources of content to be synced 
+    local dsts=() # array of destinations for the content to be synced to
+
+    # Files within the EXTERNAL_SOURCES directory should be csv formatted with the
+    # directory being the GitHub org and name of the file being the repo name
+    # (e.g. kubernetes/community), and the  content being the path to the content
+    # to be synced within the repo to the to the destination within the HUGO
+    # content directory.
+    # Example:
+    # file-path: external-sources/en/kubernetes/community
+    # "/contributors/guide", "/guide" 
+
+    shopt -s globstar dotglob
+    for repo in "${lang_dir}"/**; do
+      if [[ -f "$repo" ]]; then
+        repos+=("$repo")
+      fi
+    done
+    shopt -u globstar
+
+    # populate the arrays with information parsed from files in ${EXTERNAL_SOURCES}
+    for repo in "${repos[@]}"; do
+      local org
+      org="$(basename "$(dirname "$repo")")"
+      # shellcheck disable=SC2094 # false detection on read/write to $repo at the same time
+      while IFS=, read -re src dst || [ -n "$src" ]; do
+        srcs+=("/$org/$(basename "$repo")$(echo "$src" | $SED -e 's/^\"//g;s/\"$//g')")
+        dsts+=("$(echo "$dst" | $SED -e 's/^\"//g;s/\"$//g')")
+      done < "$repo"
+      init_src "https://github.com/$org/$(basename "$repo").git" "${TEMP_DIR}/$org/$(basename "$repo")"
+    done
 
   # Duplicate of the srcs array used to reference the file paths of the source
   # files as some file names may be changed in place to be copied over correctly.
@@ -412,7 +421,8 @@ main() {
       rsync -a ${VERBOSE} "${TEMP_DIR}${renamed_srcs[i]}" "${TARGET}${dsts[i]}" --exclude "OWNERS"
     fi
   done
-  echo "Content synced." 1>&2
+  echo "Content synced for language: ${lang}" 1>&2
+  done
 }
 
 if [ "$IN_CONTAINER" = "true" ]; then
