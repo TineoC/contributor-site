@@ -50,7 +50,7 @@ fi
 # discover GNU grep on the system (macOS by default has BSD grep,
 # which does not support perl regex via the -P flag)
 GREP="grep"
-if $GREP --version | $GREP "BSD" >/dev/null; then
+if $GREP --version 2>/dev/null | $GREP "BSD" >/dev/null; then
     if command -v ggrep >/dev/null; then
         GREP="ggrep"
     else
@@ -61,7 +61,7 @@ fi
 
 # discover GNU sed on the system
 SED="sed"
-if ! $SED --version >/dev/null; then
+if ! $SED --version 2>/dev/null >/dev/null; then
     if command -v gsed >/dev/null; then
         SED="gsed"
     else
