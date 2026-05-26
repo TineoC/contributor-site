@@ -15,7 +15,7 @@ If you are contributing to the Kubernetes project and are developing on a Window
 
 ## Why is this needed?
  
-While contributing to [kubernetes/kubernetes](https://github.com/kubernetes/kubernetes) for some minor documentation changes, the pushed changes needed to be updated with other verified contents of the entire documentation. So, in order for the change to take effect, a single command must be performed to ensure that all tests on the CI pipeline pass. The single command `make update` runs all presubmission verification tests. For some reason on the "Windows Subsystem for Linux" environment the tests, specifically the [update-openapi-spec.sh](https://github.com/kubernetes/kubernetes/blob/master/hack/update-openapi-spec.sh) script, failed (in my case, take a look at the conversation [here](https://github.com/kubernetes/kubernetes/pull/107691)), eventually failing the `pull-kubernetes-verify` tests.
+While contributing to [kubernetes/kubernetes](https://git.k8s.io/kubernetes) for some minor documentation changes, the pushed changes needed to be updated with other verified contents of the entire documentation. So, in order for the change to take effect, a single command must be performed to ensure that all tests on the CI pipeline pass. The single command `make update` runs all presubmission verification tests. For some reason on the "Windows Subsystem for Linux" environment the tests, specifically the [update-openapi-spec.sh](https://git.k8s.io/kubernetes/blob/master/hack/update-openapi-spec.sh) script, failed (in my case, take a look at the conversation [here](https://git.k8s.io/kubernetes/pull/107691)), eventually failing the `pull-kubernetes-verify` tests.
 
 
 
@@ -42,9 +42,9 @@ Run the failing `.sh` scripts individually known from the CI job output, to gene
 
 In this particular case, these files were to be run:
 
-* [hack/update-generated-protobuf.sh](https://github.com/kubernetes/kubernetes/blob/master/hack/update-generated-protobuf.sh) 
-* [hack/update-generated-swagger-docs.sh](https://github.com/kubernetes/kubernetes/blob/master/hack/update-generated-swagger-docs.sh)
-* [hack/update-openapi-spec.sh](https://github.com/kubernetes/kubernetes/blob/master/hack/update-openapi-spec.sh)
+* [hack/update-generated-protobuf.sh](https://git.k8s.io/kubernetes/blob/master/hack/update-generated-protobuf.sh) 
+* [hack/update-generated-swagger-docs.sh](https://git.k8s.io/kubernetes/blob/master/hack/update-generated-swagger-docs.sh)
+* [hack/update-openapi-spec.sh](https://git.k8s.io/kubernetes/blob/master/hack/update-openapi-spec.sh)
 
 After you run these, you might see either of the below issues:
 
@@ -86,7 +86,7 @@ Many contributors do not have access to powerful environments in which to run `m
 
 ### Solutions
 
-According to [@dims](https://github.com/dims), a [long term solution](https://github.com/kubernetes/kubernetes/issues/109374#issuecomment-1092155063) for this problem would be to add a new Prow bot command that generates an additional commit on their PR.
+According to [@dims](https://github.com/dims), a [long term solution](https://git.k8s.io/kubernetes/issues/109374#issuecomment-1092155063) for this problem would be to add a new Prow bot command that generates an additional commit on their PR.
 
 In the meantime, the short term workaround is to add a CI job that folks can trigger when they need it, that runs `make update` and provides a zip archive that they can be told to download. The archive includes all the files that changed as a result of running `make update`.
 

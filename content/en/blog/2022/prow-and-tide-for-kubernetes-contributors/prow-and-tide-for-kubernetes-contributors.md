@@ -21,9 +21,9 @@ criteria. It will automatically retest PRs that meet the criteria ('tide comes i
 them when they have up-to-date passing test results ('tide goes out')."
 
 What actually prompted this article is the awesomely amazing folks on the [Contributor Comms
-team](https://github.com/kubernetes/community/tree/master/communication) saying, "I need to squash my commits
+team](https://git.k8s.io/community/tree/master/communication) saying, "I need to squash my commits
 and push that." Which immediately made me remember the wonder of the Tide label:
-[`tide/merge-method-squash`](https://github.com/kubernetes/test-infra/blob/master/label_sync/labels.md#tide/merge-method-squash).
+[`tide/merge-method-squash`](https://git.k8s.io/test-infra/blob/master/label_sync/labels.md#tide/merge-method-squash).
 
 ## Why is this helpful
 
@@ -80,14 +80,14 @@ This use of Tide is one of the most useful when submitting changes that undergo 
 discussion, since it automates something to do The Right Thing (TM).
 
 There's often nothing better than an example, so let's take a look at [this proposed change to the Kubernetes
-website](https://github.com/kubernetes/website/pull/32685), on the topic of the `dockershim` removal FAQ. The
-initial commit is [followed by several others](https://github.com/kubernetes/website/pull/32685/commits), a
+website](https://git.k8s.io/website/pull/32685), on the topic of the `dockershim` removal FAQ. The
+initial commit is [followed by several others](https://git.k8s.io/website/pull/32685/commits), a
 result of the conversation and proposed reviews. The result of all those changes [is
-merged](https://github.com/kubernetes/website/commit/a582a21cf00c88446a7feda4effd853b108c5c9c) as a single
+merged](https://git.k8s.io/website/commit/a582a21cf00c88446a7feda4effd853b108c5c9c) as a single
 commit, with the commit message retaining the title of the very first commit done, and the commit description
 being the aggregate of all the commits done in the PR. This was achieved by using `/label
 tide/merge-method-squash` [in a
-comment](https://github.com/kubernetes/website/pull/32685#issuecomment-1085801034), and did away with the need
+comment](https://git.k8s.io/website/pull/32685#issuecomment-1085801034), and did away with the need
 to manually rebase and/or squash using `git`: everything was possible through the GitHub interface.
 
 ## Assignment, review, approval.
@@ -114,7 +114,7 @@ automatically, adds the `lgtm` label which is required for approval, and `/appro
 merging.
 
 An [example of many of these is this update to the Kubernetes Community
-site](https://github.com/kubernetes/community/pull/6765): we can see how additional reviewers were added with
+site](https://git.k8s.io/community/pull/6765): we can see how additional reviewers were added with
 `/cc`, and following the discussion and changes, both the `/lgtm` and `/approve` commands are used to trigger
 the merging.
 
@@ -128,7 +128,7 @@ The previous examples are some of the most commonly used, but Prow and Tide prov
 pages document all the functionality available to Kubernetes contributors (either through labels or Prow):
 
 * [Prow Command Help](https://prow.kubernetes.io/command-help)
-* [test-infra/label_sync/labels.md](https://github.com/kubernetes/test-infra/tree/master/label_sync)
+* [test-infra/label_sync/labels.md](https://git.k8s.io/test-infra/tree/master/label_sync)
 
 Labels are most commonly applied by using an associated command (e.g. `/lgtm`, instead of `/label lgtm`): only
 when no such command exists are labels applied directly with the `label` command; some of my more often used
@@ -149,12 +149,12 @@ commands and labels:
 
 What if you need a label that isn't available on a certain GitHub repository? I'm glad you asked! This PR
 demonstrates how to add labels to a repo:
-[https://github.com/kubernetes/test-infra/pull/24315](https://github.com/kubernetes/test-infra/pull/24315). You'll
+[https://git.k8s.io/test-infra/pull/24315](https://git.k8s.io/test-infra/pull/24315). You'll
 need to update the [labels.yaml
-file](https://github.com/kubernetes/test-infra/blob/master/label_sync/labels.yaml) (the configuration) and the
-[labels.md file](https://github.com/kubernetes/test-infra/blob/master/label_sync/labels.md) (documentation).
+file](https://git.k8s.io/test-infra/blob/master/label_sync/labels.yaml) (the configuration) and the
+[labels.md file](https://git.k8s.io/test-infra/blob/master/label_sync/labels.md) (documentation).
 
-This is why the [label_sync](https://github.com/kubernetes/test-infra/blob/master/label_sync/labels.md#intro)
+This is why the [label_sync](https://git.k8s.io/test-infra/blob/master/label_sync/labels.md#intro)
 tool, along with the logic Prow and Tide, simplify GitHub-based processes: they allow the automation of common
 actions without necessarily having to leave the web-based GitHub interface. `label_sync` ensures that labels
 are applied uniformly across repositories.
@@ -163,7 +163,7 @@ I've done this once in five years of contributing. But, it's good to write it do
 isn't as trivial as you think because of the importance of the label_sync tooling.
 
 These are a handful of the [commands](https://prow.kubernetes.io/command-help) and
-[labels](https://github.com/kubernetes/test-infra/blob/master/label_sync/labels.md) I enjoy. I'm sure there
+[labels](https://git.k8s.io/test-infra/blob/master/label_sync/labels.md) I enjoy. I'm sure there
 are many others that are helpful to folks. With that in mind, see if there's something you can benefit from in
 these resources. They are there to make working on Kubernetes a better experience. If you think there's some
 functionality missing, I'd invite you to drop a Slack message in [SIG

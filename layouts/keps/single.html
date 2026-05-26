@@ -24,7 +24,7 @@
         </a>
       </li>
       <li>
-        <a href="https://github.com/kubernetes/enhancements/tree/master/keps/{{ .Params.owningSig }}/{{ .Params.name }}" target="_blank" rel="noopener">
+        <a href="https://git.k8s.io/enhancements/tree/master/keps/{{ .Params.owningSig }}/{{ .Params.name }}" target="_blank" rel="noopener">
           KEP Documentation
         </a>
       </li>
@@ -35,7 +35,7 @@
   <div class="kep-sigs mt-4">
     <h2 id="sigs">SIGs</h2>
       <p class="kep-sigs-owner">Owning SIG:</p>
-      <a href="https://github.com/kubernetes/community/tree/master/{{ .Params.owningSig }}">
+      <a href="https://git.k8s.io/community/tree/master/{{ .Params.owningSig }}">
         SIG {{ strings.TrimPrefix "sig-" .Params.owningSig | humanize | title }}
       </a>
     {{ with .Params.participatingSigs }}
@@ -43,7 +43,7 @@
       <strong>Participating SIGs:</strong>
       {{ range $i, $sig := . }}
         {{- if $i }}, {{ end -}}
-        <a href="https://github.com/kubernetes/community/tree/master/{{ $sig }}">
+        <a href="https://git.k8s.io/community/tree/master/{{ $sig }}">
           SIG {{ strings.TrimPrefix "sig-" $sig | humanize | title }}
         </a>
       {{ end }}

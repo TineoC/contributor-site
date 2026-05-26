@@ -8,7 +8,7 @@ author: "Frederico Muñoz (SAS Institute)"
 
 _This is the fourth interview of a SIG Architecture Spotlight series that will cover the different
 subprojects, and we will be covering [SIG Architecture:
-Enhancements](https://github.com/kubernetes/community/blob/master/sig-architecture/README.md#enhancements)._
+Enhancements](https://git.k8s.io/community/blob/master/sig-architecture/README.md#enhancements)._
 
 In this SIG Architecture spotlight we talked with [Kirsten
 Garrison](https://github.com/kikisdeliveryservice), lead of the Enhancements subproject.
@@ -21,7 +21,7 @@ subproject. Let's start with some quick information about yourself and your role
 **Kirsten Garrison (KG)**: I’m a lead of the Enhancements subproject of SIG-Architecture and
 currently work at Google. I first got involved by contributing to the service-catalog project with
 the help of [Carolyn Van Slyck](https://github.com/carolynvs). With time, [I joined the Release
-team](https://github.com/kubernetes/sig-release/blob/master/releases/release-1.17/release_team.md),
+team](https://git.k8s.io/sig-release/blob/master/releases/release-1.17/release_team.md),
 eventually becoming the Enhancements Lead and a Release Lead shadow. While on the release team, I
 worked on some ideas to make the process better for the SIGs and Enhancements team (the opt-in
 process) based on my team’s experiences. Eventually, I started attending Subproject meetings and
@@ -31,9 +31,9 @@ contributing to the Subproject’s work.
 intervention?**
 
 **KG**: The [Enhancements
-Subproject](https://github.com/kubernetes/community/blob/master/sig-architecture/README.md#enhancements)
+Subproject](https://git.k8s.io/community/blob/master/sig-architecture/README.md#enhancements)
 primarily concerns itself with the [Kubernetes Enhancement
-Proposal](https://github.com/kubernetes/enhancements/blob/master/keps/sig-architecture/0000-kep-process/README.md)
+Proposal](https://git.k8s.io/enhancements/blob/master/keps/sig-architecture/0000-kep-process/README.md)
 (_KEP_ for short)—the "design" documents required for all features and significant changes
 to the Kubernetes project.
 
@@ -51,7 +51,7 @@ phases](https://kubernetes.io/docs/reference/command-line-tools-reference/featur
 alpha, beta and finally GA so approving a feature represents a significant commitment for the SIG.
 
 The KEP serves as the full source of truth of a feature. The [KEP
-template](https://github.com/kubernetes/enhancements/blob/master/keps/NNNN-kep-template/README.md)
+template](https://git.k8s.io/enhancements/blob/master/keps/NNNN-kep-template/README.md)
 has different requirements based on what stage a feature is in, but it generally requires a detailed
 discussion of the design and the impact as well as providing artifacts of stability and
 performance. The KEP takes quite a bit of iterative work between authors, SIG reviewers, api review
@@ -71,7 +71,7 @@ process is communication and consideration.
 
 To that end, some of the significant changes revolve around a more detailed and accessible KEP
 template. A significant amount of work was put in over time to get the
-[k/enhancements](https://github.com/kubernetes/enhancements) repo into its current form -- a
+[k/enhancements](https://git.k8s.io/enhancements) repo into its current form -- a
 directory structure organized by SIG with the contours of the modern KEP template (with
 Proposal/Motivation/Design Details subsections). We might take that basic structure for granted
 today, but it really represents the work of many people trying to get the foundation of this process
@@ -117,7 +117,7 @@ on a KEP and removed toil from the Enhancements team. This change used the exist
 introducing too many changes at once to the community. Later, the Release Team approached the
 Subproject with an idea of leveraging GitHub Project Boards to further improve the collection
 process. This was to be a move away from the use of complicated spreadsheets to using repo-native
-labels on [k/enhancement](https://github.com/kubernetes/enhancements) issues and project boards.
+labels on [k/enhancement](https://git.k8s.io/enhancements) issues and project boards.
 
 **FSM: That surely adds an impact on simplifying the workflow...**
 

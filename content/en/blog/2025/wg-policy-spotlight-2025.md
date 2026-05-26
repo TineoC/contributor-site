@@ -42,7 +42,7 @@ These co-chairs explained what the Policy Working Group was all about.
 
 Unlike SIGs, working groups are temporary and focused on tackling specific, cross-cutting issues or projects that may involve multiple SIGs. Their lifespan is defined, and they disband once they've achieved their objective. Generally, working groups don't own code or have long-term responsibility for managing a particular area of the Kubernetes project.
 
-(To know more about SIGs, visit the [list of Special Interest Groups](https://github.com/kubernetes/community/blob/master/sig-list.md))
+(To know more about SIGs, visit the [list of Special Interest Groups](https://git.k8s.io/community/blob/master/sig-list.md))
  
 **You mentioned that Working Groups involve multiple SIGS. What SIGS was the Policy WG closely involved with, and how did you coordinate with them?**
 
@@ -70,7 +70,7 @@ We worked on several Kubernetes policy-related projects. Our initiatives include
 
 The charter of the Policy WG was to help standardize policy management for Kubernetes and educate the community on best practices.
 
-To accomplish this we updated the Kubernetes documentation ([Policies | Kubernetes](https://kubernetes.io/docs/concepts/policy)), produced several whitepapers ([Kubernetes Policy Management](https://github.com/kubernetes/sig-security/blob/main/sig-security-docs/papers/policy/CNCF_Kubernetes_Policy_Management_WhitePaper_v1.pdf), [Kubernetes GRC](https://github.com/kubernetes/sig-security/blob/main/sig-security-docs/papers/policy_grc/Kubernetes_Policy_WG_Paper_v1_101123.pdf)), and created the Policy Reports API ([API reference](https://github.com/kubernetes-retired/wg-policy-prototypes/blob/master/policy-report/docs/api-docs.md)) which standardizes reporting across various tools. Several popular tools such as Falco, Trivy, Kyverno, kube-bench, and others support the Policy Report API. A major milestone for the Policy WG was promoting the Policy Reports API to a SIG-level API or finding it a stable home.
+To accomplish this we updated the Kubernetes documentation ([Policies | Kubernetes](https://kubernetes.io/docs/concepts/policy)), produced several whitepapers ([Kubernetes Policy Management](https://git.k8s.io/sig-security/blob/main/sig-security-docs/papers/policy/CNCF_Kubernetes_Policy_Management_WhitePaper_v1.pdf), [Kubernetes GRC](https://git.k8s.io/sig-security/blob/main/sig-security-docs/papers/policy_grc/Kubernetes_Policy_WG_Paper_v1_101123.pdf)), and created the Policy Reports API ([API reference](https://github.com/kubernetes-retired/wg-policy-prototypes/blob/master/policy-report/docs/api-docs.md)) which standardizes reporting across various tools. Several popular tools such as Falco, Trivy, Kyverno, kube-bench, and others support the Policy Report API. A major milestone for the Policy WG was promoting the Policy Reports API to a SIG-level API or finding it a stable home.
 
 Beyond that, as [ValidatingAdmissionPolicy](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/) and [MutatingAdmissionPolicy](https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/) approached GA in Kubernetes, a key goal of the WG was to guide and educate the community on the tradeoffs and appropriate usage patterns for these built-in API objects and other CNCF policy management solutions like OPA/Gatekeeper and Kyverno.
 
@@ -99,4 +99,4 @@ Additionally, differences of opinion were valued and encouraged within the Polic
 
 ---
 
-This is where our discussion about the Policy Working Group ends. The working group, and especially the people who took part in this article, hope this gave you some insights into the group's aims and workings. You can get more info about Working Groups [here](https://github.com/kubernetes/community/blob/master/committee-steering/governance/wg-governance.md).
+This is where our discussion about the Policy Working Group ends. The working group, and especially the people who took part in this article, hope this gave you some insights into the group's aims and workings. You can get more info about Working Groups [here](https://git.k8s.io/community/blob/master/committee-steering/governance/wg-governance.md).

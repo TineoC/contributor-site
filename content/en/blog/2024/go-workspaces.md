@@ -109,7 +109,7 @@ the code-generation tools.
 
 We had about a dozen tools, totalling several thousand lines of code. All of
 them were built using an internal framework called
-[gengo](https://github.com/kubernetes/gengo), which was built on Go's own
+[gengo](https://git.k8s.io/gengo), which was built on Go's own
 parsing libraries. There were two main problems:
 
 1. Those parsing libraries didn't understand modules or workspaces.
@@ -140,7 +140,7 @@ I just can't say enough good things about.
 One unfortunate result of this work was that I had to break compatibility. The
 gengo library simply did not have enough information to process packages
 outside of GOPATH. After discussion with gengo and Kubernetes maintainers, we
-agreed to make [gengo/v2](https://github.com/kubernetes/gengo/tree/master/v2).
+agreed to make [gengo/v2](https://git.k8s.io/gengo/tree/master/v2).
 I also used this as an opportunity to clean up some of the gengo APIs and the
 tools' CLIs to be more understandable and not conflate packages and
 directories. For example you can't just string-join directory names and

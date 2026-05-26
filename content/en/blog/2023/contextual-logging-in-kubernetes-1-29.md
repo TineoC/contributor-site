@@ -6,8 +6,8 @@ date: 2023-12-20T09:30:00-08:00
 author: Mengjiao Liu and Patrick Ohly
 ---
 
-On behalf of the [Structured Logging Working Group](https://github.com/kubernetes/community/blob/master/wg-structured-logging/README.md) 
-and [SIG Instrumentation](https://github.com/kubernetes/community/tree/master/sig-instrumentation#readme), 
+On behalf of the [Structured Logging Working Group](https://git.k8s.io/community/blob/master/wg-structured-logging/README.md) 
+and [SIG Instrumentation](https://git.k8s.io/community/tree/master/sig-instrumentation#readme), 
 we are pleased to announce that the contextual logging feature
 introduced in Kubernetes v1.24 has now been successfully migrated to
 two components (kube-scheduler and kube-controller-manager)
@@ -16,7 +16,7 @@ for better troubleshooting of Kubernetes and to empower developers to enhance Ku
 
 ## What is contextual logging?
 
-[Contextual logging](https://github.com/kubernetes/enhancements/tree/master/keps/sig-instrumentation/3077-contextual-logging)
+[Contextual logging](https://git.k8s.io/enhancements/tree/master/keps/sig-instrumentation/3077-contextual-logging)
 is based on the [go-logr](https://github.com/go-logr/logr#a-minimal-logging-api-for-go) API. 
 The key idea is that libraries are passed a logger instance by their caller
 and use that for logging instead of accessing a global logger.
@@ -91,7 +91,7 @@ adding `WithName` and `WithValues` needs to be done more carefully.
 In Kubernetes 1.29, enabling contextual logging at production verbosity (`-v3` or lower)
 caused no measurable slowdown for the `kube-scheduler` and is not expected for the `kube-controller-manager` either.
 At debug levels, a 28% slowdown for some test cases is still reasonable given that the resulting logs make debugging easier. 
-For details, see the [discussion around promoting the feature to beta](https://github.com/kubernetes/enhancements/pull/4219#issuecomment-1807811995).
+For details, see the [discussion around promoting the feature to beta](https://git.k8s.io/enhancements/pull/4219#issuecomment-1807811995).
 
 ## Impact on downstream users
 Log output is not part of the Kubernetes API and changes regularly in each release,
@@ -104,13 +104,13 @@ they need to be aware of how this change affects them.
 ## Further reading
 
 - Read the [Contextual Logging in Kubernetes 1.24](/blog/2022/05/25/contextual-logging/) article.
-- Read the [KEP-3077: contextual logging](https://github.com/kubernetes/enhancements/tree/master/keps/sig-instrumentation/3077-contextual-logging).
+- Read the [KEP-3077: contextual logging](https://git.k8s.io/enhancements/tree/master/keps/sig-instrumentation/3077-contextual-logging).
 
 ## Get involved
 
 If you're interested in getting involved, we always welcome new contributors to join us.
 Contextual logging provides a fantastic opportunity for you to contribute to Kubernetes development and make a meaningful impact.
-By joining [Structured Logging WG](https://github.com/kubernetes/community/tree/master/wg-structured-logging),
+By joining [Structured Logging WG](https://git.k8s.io/community/tree/master/wg-structured-logging),
 you can actively participate in the development of Kubernetes and make your first contribution.
 It's a great way to learn and engage with the community while gaining valuable experience.
 

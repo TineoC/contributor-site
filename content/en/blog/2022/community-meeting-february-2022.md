@@ -25,12 +25,12 @@ From there, the discussion moved to the dockershim removal and the docs updates 
 around that, with the discussion led by Kat Cosgrove. The main takeaway was that if you have a 
 platform, talk to folks about this change. To most interacting with Kubernetes, it is probably not as 
 impactful as it sounds. We have a [helpful FAQ](https://kubernetes.io/dockershim) if you need. You 
-can even try out an alpha release from the [1.24 release page](https://github.com/kubernetes/kubernetes/releases?q=v1.24.0-alpha).
+can even try out an alpha release from the [1.24 release page](https://git.k8s.io/kubernetes/releases?q=v1.24.0-alpha).
 
 We moved on to a spirited discussion of a Kubernetes Enhancement Proposal (KEP) about raising the bar 
 for reliability brought by Wojciech Tyczynski. It was emphasized that effort on this proposal should 
 be a collaborative effort with SIG Testing who are managing dashboards on test flakiness among other 
-metrics. You can find the proposed [KEP](https://github.com/kubernetes/enhancements/pull/3139) on 
+metrics. You can find the proposed [KEP](https://git.k8s.io/enhancements/pull/3139) on 
 GitHub.
 
 Finally, Paris mentioned the k-dev migration of the developer mailing list. If you manage Google Docs 

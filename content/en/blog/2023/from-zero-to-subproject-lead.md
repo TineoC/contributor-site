@@ -36,7 +36,7 @@ and celebrated. When you raise your hand to do something, even if you know nothi
 cheer and help you along the way. 
 
 This method was my exact story. It was my first or second meeting with [SIG
-Security](https://github.com/kubernetes/community/tree/master/sig-security), and [Pushkar
+Security](https://git.k8s.io/community/tree/master/sig-security), and [Pushkar
 Joglekar](https://github.com/PushkarJ) mentioned that he needed a lead for a subproject he was
 creating after having done a security assessment of [Cluster API](https://cluster-api.sigs.k8s.io/).
 Everyone was so friendly in the meeting
@@ -54,7 +54,7 @@ execute. But the other thing that I’m learning is that building this consensus
 transparent, inviting way simply takes time. 
 
 I also have to be patient with myself and remember that I am learning as I go. The [Kubernetes git
-repo](https://github.com/kubernetes/kubernetes) can be daunting to navigate. Knowing the next best
+repo](https://git.k8s.io/kubernetes) can be daunting to navigate. Knowing the next best
 step isn’t always obvious. But this is where my third learning curve, how to engage the community
 to get what I need, comes into play. It turns out that asking questions in the [Kubernetes Slack
 workspace](https://slack.k8s.io/) and bringing my topics to the SIG Security meetings when I need

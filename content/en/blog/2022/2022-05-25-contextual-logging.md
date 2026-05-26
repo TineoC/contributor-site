@@ -8,7 +8,7 @@ slug: contextual-logging
  **Authors:** Patrick Ohly (Intel)
 
 The [Structured Logging Working
-Group](https://github.com/kubernetes/community/blob/master/wg-structured-logging/README.md)
+Group](https://git.k8s.io/community/blob/master/wg-structured-logging/README.md)
 has added new capabilities to the logging infrastructure in Kubernetes
 1.24. This blog post explains how developers can take advantage of those to
 make log output more useful and how they can get involved with improving Kubernetes.
@@ -16,7 +16,7 @@ make log output more useful and how they can get involved with improving Kuberne
 ## Structured logging
 
 The goal of [structured
-logging](https://github.com/kubernetes/enhancements/blob/master/keps/sig-instrumentation/1602-structured-logging/README.md)
+logging](https://git.k8s.io/enhancements/blob/master/keps/sig-instrumentation/1602-structured-logging/README.md)
 is to replace C-style formatting and the resulting opaque log strings with log
 entries that have a well-defined syntax for storing message and parameters
 separately, for example as a JSON struct.
@@ -61,7 +61,7 @@ been updated to support structured logging.
 
 ## Contextual logging
 
-[Contextual logging](https://github.com/kubernetes/enhancements/blob/master/keps/sig-instrumentation/3077-contextual-logging/README.md)
+[Contextual logging](https://git.k8s.io/enhancements/blob/master/keps/sig-instrumentation/3077-contextual-logging/README.md)
 is based on the [go-logr API](https://github.com/go-logr/logr#a-minimal-logging-api-for-go). The key
 idea is that libraries are passed a logger instance by their caller and use
 that for logging instead of accessing a global logger. The binary decides about
@@ -101,7 +101,7 @@ Another decision was to not break compatibility with klog v2:
   set up contextual logging will work and log through the logging backend
   chosen by the binary. However, such log output will not include the
   additional information and will not work well in unit tests, so libraries
-  should be modified to support contextual logging. The [migration guide](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-instrumentation/migration-to-structured-logging.md)
+  should be modified to support contextual logging. The [migration guide](https://git.k8s.io/community/blob/master/contributors/devel/sig-instrumentation/migration-to-structured-logging.md)
   for structured logging has been extended to also cover contextual logging.
 
 - When a library supports contextual logging and retrieves a logger from its
@@ -113,7 +113,7 @@ In Kubernetes 1.24, contextual logging is a new alpha feature with
 API calls for contextual logging (see below) become no-ops to avoid performance
 or functional regressions.
 
-No Kubernetes component has been converted yet. An [example program](https://github.com/kubernetes/kubernetes/blob/v1.24.0-beta.0/staging/src/k8s.io/component-base/logs/example/cmd/logger.go)
+No Kubernetes component has been converted yet. An [example program](https://git.k8s.io/kubernetes/blob/v1.24.0-beta.0/staging/src/k8s.io/component-base/logs/example/cmd/logger.go)
 in the Kubernetes repository demonstrates how to enable contextual logging in a
 binary and how the output depends on the binary's parameters:
 
@@ -135,7 +135,7 @@ The `example` prefix and `foo="bar"` were added by the caller of the function
 which logs the `runtime` message and `duration="1m0s"` value.
 
 The sample code for klog includes an
-[example](https://github.com/kubernetes/klog/blob/v2.60.1/ktesting/example/example_test.go)
+[example](https://git.k8s.io/klog/blob/v2.60.1/ktesting/example/example_test.go)
 for a unit test with per-test output.
 
 ## klog enhancements
@@ -223,26 +223,26 @@ registering the logger with the
 
 ### Various other changes
 
-For a description of all other enhancements see in the [release notes](https://github.com/kubernetes/klog/releases).
+For a description of all other enhancements see in the [release notes](https://git.k8s.io/klog/releases).
 
 ## logcheck
 
 Originally designed as a linter for structured log calls, the
- [`logcheck`](https://github.com/kubernetes/klog/tree/788efcdee1e9be0bfbe5b076343d447314f2377e/hack/tools/logcheck)
+ [`logcheck`](https://git.k8s.io/klog/tree/788efcdee1e9be0bfbe5b076343d447314f2377e/hack/tools/logcheck)
 tool has been enhanced to support also contextual logging and traditional klog
 log calls. These enhanced checks already found bugs in Kubernetes, like calling
 `klog.Info` instead of `klog.Infof` with a format string and parameters.
 
 It can be included as a plugin in a `golangci-lint` invocation, which is how
-[Kubernetes uses it now](https://github.com/kubernetes/kubernetes/commit/17e3c555c5115f8c9176bae10ba45baa04d23a7b),
+[Kubernetes uses it now](https://git.k8s.io/kubernetes/commit/17e3c555c5115f8c9176bae10ba45baa04d23a7b),
 or get invoked stand-alone.
 
-We are in the process of [moving the tool](https://github.com/kubernetes/klog/issues/312) into a new repository because it isn't
+We are in the process of [moving the tool](https://git.k8s.io/klog/issues/312) into a new repository because it isn't
 really related to klog and its releases should be tracked and tagged properly.
 
 ## Next steps
 
-The [Structured Logging WG](https://github.com/kubernetes/community/tree/master/wg-structured-logging)
+The [Structured Logging WG](https://git.k8s.io/community/tree/master/wg-structured-logging)
 is always looking for new contributors. The migration
 away from C-style logging is now going to target structured, contextual logging
 in one step to reduce the overall code churn and number of PRs. Changing log

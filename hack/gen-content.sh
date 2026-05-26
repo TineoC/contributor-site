@@ -120,14 +120,14 @@ find_md_files() {
 # root page.) If the link references something not within the content that is
 # being copied over, it will be expanded to the full github url.
 # Example:
-#   Repo: https://github.com/kubernetes/community
+#   Repo: https://git.k8s.io/community
 #   Content to be synced: /contributors/guide -> /guide
 #   Markdown file: /contributors/guide/README.md
 #   Links:
 #   ./bug-bounty.md -> /guide/bug-bounty
 #   contributor-cheatsheet/README.md -> /guide/contributor-cheatsheet
-#   ../../sig-list.md -> https://github.com/kubernetes/community/blob/<default-branch>/sig-list.md
-#   /contributors/devel/README.md -> https://github.com/kubernetes/community/blob/<default-branch>/contributors/devel/README.md
+#   ../../sig-list.md -> https://git.k8s.io/community/blob/<default-branch>/sig-list.md
+#   /contributors/devel/README.md -> https://git.k8s.io/community/blob/<default-branch>/contributors/devel/README.md
 #   http://git.k8s.io/cotributors/guide/collab.md -> /guide/collab
 # 
 # Args:

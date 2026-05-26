@@ -48,15 +48,15 @@ You can identify different types of issues with their labels (AKA tags).
 
 Issues are managed in many of the different Kubernetes GitHub repositories, and can be accessed via the _Issues_ tab. Here are the most common:
 
-* [kubernetes/kubernetes](https://github.com/kubernetes/kubernetes/issues)
-* [kubernetes/community](https://github.com/kubernetes/community/issues)
-* [kubernetes/website](https://github.com/kubernetes/website/issues)
+* [kubernetes/kubernetes](https://git.k8s.io/kubernetes/issues)
+* [kubernetes/community](https://git.k8s.io/community/issues)
+* [kubernetes/website](https://git.k8s.io/website/issues)
 
 ---
 
 # What are some common labels?
 
-There are [A LOT of different labels](https://github.com/kubernetes/test-infra/blob/master/label_sync/labels.md), and both issues and pull requests (PRs) can have their own labels. Here are a few you will run into frequently.
+There are [A LOT of different labels](https://git.k8s.io/test-infra/blob/master/label_sync/labels.md), and both issues and pull requests (PRs) can have their own labels. Here are a few you will run into frequently.
 
 <table style="font-size: 45%">
   <tr>

@@ -46,7 +46,7 @@ especially students, since a couple of years ago.
 One of the major highlights and up-and-coming localizations are Hindi and Bengali. The efforts for Hindi 
 localization are currently being spearheaded by students in India.
 
-In addition to that, there are two other subprojects: [reference-docs](https://github.com/kubernetes-sigs/reference-docs) and the [website](https://github.com/kubernetes/website), which is built with Hugo and is an important ownership area.
+In addition to that, there are two other subprojects: [reference-docs](https://github.com/kubernetes-sigs/reference-docs) and the [website](https://git.k8s.io/website), which is built with Hugo and is an important ownership area.
 
 ### Recently there has been a lot of buzz around the Kubernetes ecosystem as well as the industry regarding the removal of dockershim in the latest 1.24 release. How has SIG Docs helped the project to ensure a smooth change among the end-users? {#dockershim-removal}
 
@@ -109,5 +109,5 @@ SIG Docs hosted a [deep dive talk](https://www.youtube.com/watch?v=GDfcBF5et3Q)
 during  on KubeCon + CloudNativeCon North America 2021, covering their awesome SIG. 
 They are very welcoming and have been the starting ground into Kubernetes 
 for a lot of new folks who want to contribute to the project. 
-Join the [SIG's meetings](https://github.com/kubernetes/community/blob/master/sig-docs/README.md) to find out 
+Join the [SIG's meetings](https://git.k8s.io/community/blob/master/sig-docs/README.md) to find out 
 about the most recent research results, their plans for the forthcoming year, and how to get involved in the upstream Docs team as a contributor!

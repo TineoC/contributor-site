@@ -43,7 +43,7 @@ to `PodTopologySpread` recently. `PodTopologySpread` is a relatively new feature
 and we are still in the process of gathering feedback and making improvements.
 
 Most recently, we have been focusing on a new internal enhancement called
-[QueueingHint](https://github.com/kubernetes/enhancements/blob/master/keps/sig-scheduling/4247-queueinghint/README.md)
+[QueueingHint](https://git.k8s.io/enhancements/blob/master/keps/sig-scheduling/4247-queueinghint/README.md)
 which aims to enhance scheduling throughput. Throughput is one of our crucial metrics in
 scheduling. Traditionally, we have primarily focused on optimizing the latency of each scheduling
 cycle. QueueingHint takes a different approach, optimizing when to retry scheduling, thereby
@@ -60,7 +60,7 @@ And also, I believe
 [kube-scheduler-wasm-extension](https://github.com/kubernetes-sigs/kube-scheduler-wasm-extension)
 (a SIG subproject) that I started last year would be interesting to many people. Kubernetes has
 various extensions from many components. Traditionally, extensions are provided via webhooks
-([extender](https://github.com/kubernetes/design-proposals-archive/blob/main/scheduling/scheduler_extender.md)
+([extender](https://git.k8s.io/design-proposals-archive/blob/main/scheduling/scheduler_extender.md)
 in the scheduler) or Go SDK
 ([Scheduling Framework](https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/)
 in the scheduler). However, these come with drawbacks - performance issues with webhooks and the need to
@@ -82,7 +82,7 @@ talk about them? Are there some interesting contributions by those teams you wan
 [Kueue](https://github.com/kubernetes-sigs/kueue)
 : Recently, many people have been trying to manage batch workloads with Kubernetes, and in 2022,
   Kubernetes community founded
-  [WG-Batch](https://github.com/kubernetes/community/blob/master/wg-batch/README.md) for better
+  [WG-Batch](https://git.k8s.io/community/blob/master/wg-batch/README.md) for better
   support for such batch workloads in Kubernetes. [Kueue](https://github.com/kubernetes-sigs/kueue)
   is a project that takes a crucial role for it. It’s a job queueing controller, deciding when a job
   should wait, when a job should be admitted to start, and when a job should be preempted. Kueue aims
@@ -125,7 +125,7 @@ improving our components over the years.
 beginners looking to get involved and contribute to SIG scheduling? Where should they start?**
 
 **KN**: Let me start with a general recommendation for contributing to any SIG: a common approach is to look for
-[good-first-issue](https://github.com/kubernetes/kubernetes/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
+[good-first-issue](https://git.k8s.io/kubernetes/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
 However, you'll soon realize that many people worldwide are trying to contribute to the Kubernetes
 repository.
 
@@ -133,17 +133,17 @@ I suggest starting by examining the implementation of a component that interests
 any questions about it, ask in the corresponding Slack channel (e.g., #sig-scheduling for the
 scheduler, #sig-node for kubelet, etc). Once you have a rough understanding of the implementation,
 look at issues within the SIG (e.g.,
-[sig-scheduling](https://github.com/kubernetes/kubernetes/issues?q=is%3Aopen+is%3Aissue+label%3Asig%2Fscheduling)),
+[sig-scheduling](https://git.k8s.io/kubernetes/issues?q=is%3Aopen+is%3Aissue+label%3Asig%2Fscheduling)),
 where you'll find more unassigned issues compared to good-first-issue ones. You may also want to
 filter issues with the
-[kind/cleanup](https://github.com/kubernetes/kubernetes/issues?q=is%3Aopen+is%3Aissue++label%3Akind%2Fcleanup+)
+[kind/cleanup](https://git.k8s.io/kubernetes/issues?q=is%3Aopen+is%3Aissue++label%3Akind%2Fcleanup+)
 label, which often indicates lower-priority tasks and can be starting points.
 
 Specifically for SIG Scheduling, you should first understand the
 [Scheduling Framework](https://kubernetes.io/docs/concepts/scheduling-eviction/scheduling-framework/), which is
 the fundamental architecture of kube-scheduler. Most of the implementation is found in
-[pkg/scheduler](https://github.com/kubernetes/kubernetes/tree/master/pkg/scheduler). I suggest starting with
-[ScheduleOne](https://github.com/kubernetes/kubernetes/blob/0590bb1ac495ae8af2a573f879408e48800da2c5/pkg/scheduler/schedule_one.go#L66)
+[pkg/scheduler](https://git.k8s.io/kubernetes/tree/master/pkg/scheduler). I suggest starting with
+[ScheduleOne](https://git.k8s.io/kubernetes/blob/0590bb1ac495ae8af2a573f879408e48800da2c5/pkg/scheduler/schedule_one.go#L66)
 function and then exploring deeper from there.
 
 Additionally, apart from the main kubernetes/kubernetes repository, consider looking into
@@ -182,7 +182,7 @@ allows maintainers to focus on the core scheduling features and the framework ru
 Another major issue is maintaining sufficient scheduling throughput. Typically, a Kubernetes cluster
 has only one kube-scheduler, so its throughput directly affects the overall scheduling scalability
 and, consequently, the cluster's scalability. Although we have an internal performance test
-([scheduler_perf](https://github.com/kubernetes/kubernetes/tree/master/test/integration/scheduler_perf)),
+([scheduler_perf](https://git.k8s.io/kubernetes/tree/master/test/integration/scheduler_perf)),
 unfortunately, we sometimes overlook performance degradation in less common scenarios. It’s
 difficult as even small changes, which look irrelevant to performance, can lead to degradation.
 
@@ -200,7 +200,7 @@ that I mentioned is also part of this initiative.
 Regarding stability, introducing new optimizations like QueueHint is one of our
 strategies. Additionally, maintaining throughput is also a crucial goal towards the future. We’re
 planning to enhance our throughput monitoring
-([ref](https://github.com/kubernetes/kubernetes/issues/124774)), so that we can notice degradation
+([ref](https://git.k8s.io/kubernetes/issues/124774)), so that we can notice degradation
 as much as possible on our own before releasing. But, realistically, we can't cover every possible
 scenario. We highly appreciate any attention the community can give to scheduling throughput and
 encourage feedback and alerts regarding performance issues!
@@ -217,7 +217,7 @@ are what makes our open source so powerful 😊
 
 Feel free to reach out to us in Slack
 ([#sig-scheduling](https://kubernetes.slack.com/archives/C09TP78DV)) or
-[meetings](https://github.com/kubernetes/community/blob/master/sig-scheduling/README.md#meetings).
+[meetings](https://git.k8s.io/community/blob/master/sig-scheduling/README.md#meetings).
 I hope this article interests everyone and we can see new contributors!
 
 **AP: Thank you so much for taking the time to do this! I'm confident that many will find this

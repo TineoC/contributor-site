@@ -156,10 +156,10 @@ Our regular meeting attendees and subproject participants for the past few month
 - Swati Sehgal
 - Wenjun Wu
 
-The [kubernetes/test-infra](https://github.com/kubernetes/test-infra/) source code repository contains test definitions. The number of
+The [kubernetes/test-infra](https://git.k8s.io/test-infra/) source code repository contains test definitions. The number of
 Node PRs just in that repository:
-- 2020 PRs (since May): [183](https://github.com/kubernetes/test-infra/pulls?q=is%3Apr+is%3Aclosed+label%3Asig%2Fnode+created%3A2020-05-01..2020-12-31+-author%3Ak8s-infra-ci-robot+)
-- 2021 PRs: [264](https://github.com/kubernetes/test-infra/pulls?q=is%3Apr+is%3Aclosed+label%3Asig%2Fnode+created%3A2021-01-01..2021-12-31+-author%3Ak8s-infra-ci-robot+)
+- 2020 PRs (since May): [183](https://git.k8s.io/test-infra/pulls?q=is%3Apr+is%3Aclosed+label%3Asig%2Fnode+created%3A2020-05-01..2020-12-31+-author%3Ak8s-infra-ci-robot+)
+- 2021 PRs: [264](https://git.k8s.io/test-infra/pulls?q=is%3Apr+is%3Aclosed+label%3Asig%2Fnode+created%3A2021-01-01..2021-12-31+-author%3Ak8s-infra-ci-robot+)
 
 Triaged issues and PRs on CI board (including triaging away from the subgroup scope):
 
@@ -174,8 +174,8 @@ We are working to simplify the triage and review processes for SIG Node.
 Specifically, we are working on better test organization, naming,
 and tracking:
 
-- https://github.com/kubernetes/enhancements/pull/3042
-- https://github.com/kubernetes/test-infra/issues/24641
+- https://git.k8s.io/enhancements/pull/3042
+- https://git.k8s.io/test-infra/issues/24641
 - [Kubernetes SIG-Node CI Testgrid Tracker](https://docs.google.com/spreadsheets/d/1IwONkeXSc2SG_EQMYGRSkfiSWNk8yWLpVhPm-LOTbGM/edit#gid=0)
 
 We are also constantly making progress on improved tests debuggability and de-flaking.
@@ -185,7 +185,7 @@ There's plenty to learn in debugging test failures, and it will help you gain
 familiarity with the code that SIG Node maintains.
 
 You can always find information about the group on the
-[SIG Node](https://github.com/kubernetes/community/tree/master/sig-node) page.
+[SIG Node](https://git.k8s.io/community/tree/master/sig-node) page.
 We give group updates at our maintainer track sessions, such as
 [KubeCon + CloudNativeCon Europe 2021](https://kccnceu2021.sched.com/event/iE8E/kubernetes-sig-node-intro-and-deep-dive-elana-hashman-red-hat-sergey-kanzhelev-google) and
 [KubeCon + CloudNative North America 2021](https://kccncna2021.sched.com/event/lV9D/kubenetes-sig-node-intro-and-deep-dive-elana-hashman-derek-carr-red-hat-sergey-kanzhelev-dawn-chen-google?iframe=no&w=100%&sidebar=yes&bg=no).

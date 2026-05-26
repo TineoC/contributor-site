@@ -11,23 +11,23 @@ functionality with real clusters. Contributors sooner or later encounter it
 when asked to write E2E tests for new features or to help with debugging test
 failures. Cluster admins or vendors might run the conformance tests, a subset
 of all tests in the [E2E test
-suite](https://github.com/kubernetes/kubernetes/tree/v1.27.0-rc.0/test/e2e).
+suite](https://git.k8s.io/kubernetes/tree/v1.27.0-rc.0/test/e2e).
 
 The underlying [E2E
-framework](https://github.com/kubernetes/kubernetes/tree/v1.27.0-rc.0/test/e2e/framework)
+framework](https://git.k8s.io/kubernetes/tree/v1.27.0-rc.0/test/e2e/framework)
 for writing these E2E tests has been around for a long
 time. Functionality was added to it as needed, leading to code that became hard
 to maintain and use. The [testing commons
-WG](https://github.com/kubernetes/community/blob/master/sig-testing/README.md#testing-commons)
+WG](https://git.k8s.io/community/blob/master/sig-testing/README.md#testing-commons)
 started cleaning it up, but dissolved before completely achieving their
 goals.
 
 After the [migration to Gingko
-v2](https://github.com/kubernetes/kubernetes/pull/109111) in Kubernetes 1.25, I
+v2](https://git.k8s.io/kubernetes/pull/109111) in Kubernetes 1.25, I
 picked up several of the loose ends and started untangling them. This blog post
 is a summary of those changes. Some of this content is also found in the
 Kubernetes contributor document about [writing good E2E
-tests](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-testing/writing-good-e2e-tests.md)
+tests](https://git.k8s.io/community/blob/master/contributors/devel/sig-testing/writing-good-e2e-tests.md)
 and gets reproduced here to raise awareness that the document has been updated.
 
 ## Overall architecture
@@ -42,15 +42,15 @@ actually move the code into a staging repository.
 
 The framework acts like a normal client of an apiserver and thus doesn't need
 much more than client-go. Since [the sub-package
-refacoring](https://github.com/kubernetes/kubernetes/pull/112043), additional
+refacoring](https://git.k8s.io/kubernetes/pull/112043), additional
 sub-packages like `test/e2e/framework/pod` depend on the framework, not the
 other way around. Those other sub-packages therefore can still use internal
 code. The import boss configuration enforces [these
-constraints](https://github.com/kubernetes/kubernetes/pull/115710).
+constraints](https://git.k8s.io/kubernetes/pull/115710).
 
 What's left to clean up is that the framework contains a `TestContext` with
 fields that are used only by some tests or some test suites. The [configuration
-for `test/e2e_node`](https://github.com/kubernetes/kubernetes/blob/330b5a2b8dbd681811cb8235947557c99dd8e593/test/e2e/framework/test_context.go#L237-L263)
+for `test/e2e_node`](https://git.k8s.io/kubernetes/blob/330b5a2b8dbd681811cb8235947557c99dd8e593/test/e2e/framework/test_context.go#L237-L263)
 is the last remaining dependency on internal code. Such settings should get
 moved into the different test suites and/or tests. The advantage besides
 avoiding such dependencies will be that they will only show up in the command
@@ -70,7 +70,7 @@ A good failure message:
 
 It's okay for it to contain information that changes during each test
 run. Aggregation [simplifies the failure message with regular
-expressions](https://github.com/kubernetes/test-infra/blob/d56bc333ae8acf176887a3249f750e7a8e0377f0/triage/summarize/text.go#L39-L69)
+expressions](https://git.k8s.io/test-infra/blob/d56bc333ae8acf176887a3249f750e7a8e0377f0/triage/summarize/text.go#L39-L69)
 before looking for similar failures.
 
 Helper libraries like [Gomega](https://onsi.github.io/gomega/) or
@@ -101,7 +101,7 @@ informative. For example this check should be avoided:
 gomega.Expect(strings.Contains(actualStr, expectedSubStr)).To(gomega.Equal(true))
 ```
 
-[Comparing a boolean](https://github.com/kubernetes/kubernetes/issues/105678)
+[Comparing a boolean](https://git.k8s.io/kubernetes/issues/105678)
 like this against `true` or `false` with `gomega.Equal` or
 `framework.ExpectEqual` is not useful because dumping the actual and expected
 value just distracts from the underlying failure reason.
@@ -140,7 +140,7 @@ test output very large and may distract from the relevant information.
 Dumping structs with `format.Object` is recommended. Starting with Kubernetes
 1.26, `format.Object` will pretty-print Kubernetes API objects or structs [as
 YAML and omit unset
-fields](https://github.com/kubernetes/kubernetes/pull/113384), which is more
+fields](https://git.k8s.io/kubernetes/pull/113384), which is more
 readable than other alternatives like `fmt.Sprintf("%+v")`.
 
     import (
@@ -204,7 +204,7 @@ canceled` error. Cleanup callbacks get a new context which will time out
 eventually to ensure that tests don't get stuck. For a detailed description,
 see https://onsi.github.io/ginkgo/#interrupting-aborting-and-timing-out-suites.
 Most of the E2E tests [were update to use the Ginkgo
-context](https://github.com/kubernetes/kubernetes/pull/112923) at the start of
+context](https://git.k8s.io/kubernetes/pull/112923) at the start of
 the 1.27 development cycle.
 
 There are some gotchas:
@@ -290,9 +290,9 @@ long timeout also has drawbacks:
   environment may be a better solution for testing such performance expectations.
 
 The framework provides some [common
-timeouts](https://github.com/kubernetes/kubernetes/blob/eba98af1d8b19b120e39f3/test/e2e/framework/timeouts.go#L44-L109)
+timeouts](https://git.k8s.io/kubernetes/blob/eba98af1d8b19b120e39f3/test/e2e/framework/timeouts.go#L44-L109)
 through the [framework
-instance](https://github.com/kubernetes/kubernetes/blob/1e84987baccbccf929eba98af1d8b19b120e39f3/test/e2e/framework/framework.go#L122-L123).
+instance](https://git.k8s.io/kubernetes/blob/1e84987baccbccf929eba98af1d8b19b120e39f3/test/e2e/framework/framework.go#L122-L123).
 When writing a test, check whether one of those fits before defining a custom
 timeout in the test.
 
@@ -310,13 +310,13 @@ Good code that waits for something to happen meets the following criteria:
 
 [`gomega.Eventually`](https://pkg.go.dev/github.com/onsi/gomega#Eventually)
 satisfies all of these criteria and therefore is recommended, but not required.
-In https://github.com/kubernetes/kubernetes/pull/113298,
-[test/e2e/framework/pods/wait.go](https://github.com/kubernetes/kubernetes/blob/222f65506252354da012c2e9d5457a6944a4e681/test/e2e/framework/pod/wait.go)
+In https://git.k8s.io/kubernetes/pull/113298,
+[test/e2e/framework/pods/wait.go](https://git.k8s.io/kubernetes/blob/222f65506252354da012c2e9d5457a6944a4e681/test/e2e/framework/pod/wait.go)
 and the framework were modified to use gomega. Typically, `Eventually` is
 passed a function which gets an object or lists several of them, then `Should`
 checks against the expected result. Errors and retries specific to Kubernetes
 are handled by [wrapping client-go
-functions](https://github.com/kubernetes/kubernetes/blob/master/test/e2e/framework/get.go).
+functions](https://git.k8s.io/kubernetes/blob/master/test/e2e/framework/get.go).
 
 Using normal Gomega assertions in helper packages is problematic for two reasons:
 - The stacktrace associated with the failure starts with the helper unless
@@ -325,7 +325,7 @@ Using normal Gomega assertions in helper packages is problematic for two reasons
   and passed in.
 
 The E2E framework therefore uses a different approach:
-- [`framework.Gomega()`](https://github.com/kubernetes/kubernetes/blob/222f65506252354da012c2e9d5457a6944a4e681/test/e2e/framework/expect.go#L80-L101)
+- [`framework.Gomega()`](https://git.k8s.io/kubernetes/blob/222f65506252354da012c2e9d5457a6944a4e681/test/e2e/framework/expect.go#L80-L101)
   offers similar functions as the `gomega` package, except that they return a
   normal error instead of failing the test.
 - That error gets wrapped with `fmt.Errorf("<explanation>: %w)` to
@@ -361,7 +361,7 @@ The E2E framework therefore uses a different approach:
 
   Avoid testing for some condition inside the callback and returning a boolean
   because then failure messages are not informative (see above). See
-  https://github.com/kubernetes/kubernetes/pull/114640 for an example where
+  https://git.k8s.io/kubernetes/pull/114640 for an example where
   [gomega/gcustom](https://pkg.go.dev/github.com/onsi/gomega@v1.27.2/gcustom)
   was used to write assertions.
 
@@ -369,7 +369,7 @@ The E2E framework therefore uses a different approach:
   certain domain-specific conditions. Currently most of these functions don't
   follow best practices (not using gomega.Eventually, error messages not very
   informative). [Work is
-  planned](https://github.com/kubernetes/kubernetes/issues/106575) in that
+  planned](https://git.k8s.io/kubernetes/issues/106575) in that
   area, so beware that these APIs may
   change at some point.
 
@@ -401,12 +401,12 @@ Because a lot of existing code wouldn't pass such a check, it probably will
 only be enabled in the [new stricter pull request
 linting](https://groups.google.com/a/kubernetes.io/g/dev/c/myGiml72IbM/m/BhQqP4_OAwAJ)
 initially. Converting individual sub packages similar to
-[`test/e2e/framework/pod`](https://github.com/kubernetes/kubernetes/pull/115548)
+[`test/e2e/framework/pod`](https://git.k8s.io/kubernetes/pull/115548)
 to match current best practices would be a good way for new contributors to get
 involved.
 
 The [SIG
-Testing](https://github.com/kubernetes/community/blob/master/sig-testing/README.md)'s
+Testing](https://git.k8s.io/community/blob/master/sig-testing/README.md)'s
 Slack channel is a good place to start. At KubeCon EU 2023, the ["Keeping the
 lights on and the bugs away"
 talk](https://kccnceu2023.sched.com/event/1Hzcr/keeping-the-lights-on-and-the-bugs-away-patrick-ohly-intel)

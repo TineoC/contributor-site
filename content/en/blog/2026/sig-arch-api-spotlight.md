@@ -9,7 +9,7 @@ author: "Frederico Muñoz (SAS Institute)"
 
 _This is the fifth interview of a SIG Architecture Spotlight series that covers the different
 subprojects, and we will be covering [SIG Architecture: API
-Governance](https://github.com/kubernetes/community/blob/master/sig-architecture/README.md#architecture-and-api-governance-1)._
+Governance](https://git.k8s.io/community/blob/master/sig-architecture/README.md#architecture-and-api-governance-1)._
 
 In this SIG Architecture spotlight we talked with [Jordan Liggitt](https://github.com/liggitt), lead
 of the API Governance sub-project.
@@ -25,7 +25,7 @@ like to claim it as my point of origin), but I've lived in North Carolina for mo
 
 I've been working on Kubernetes since 2014. At that time, I was working on authentication and
 authorization at Red Hat, and my very first pull request to Kubernetes attempted to [add an OAuth
-server](https://github.com/kubernetes/kubernetes/pull/2328) to the Kubernetes API server. It never
+server](https://git.k8s.io/kubernetes/pull/2328) to the Kubernetes API server. It never
 exited work-in-progress status. I ended up going with a different approach that layered on top of
 the core Kubernetes API server in a different project (spoiler alert: this is foreshadowing), and I
 closed it without merging six months later.
@@ -64,19 +64,19 @@ change? Does API Governance get involved during the release cycle, prior to it t
 or somewhere in between? At what points do you ensure the intended role is fulfilled?**
 
 **JL**: We have [guidelines and
-conventions](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md),
+conventions](https://git.k8s.io/community/blob/master/contributors/devel/sig-architecture/api-conventions.md),
 both for APIs in general and for how to change an API. These are living documents that we update as
 we encounter new scenarios. They are long and dense, so we also support them with involvement at
 either the design stage or the implementation stage.
 
-Sometimes, due to bandwidth constraints, teams move ahead with design work without feedback from [API Review](https://github.com/kubernetes/community/blob/master/sig-architecture/api-review-process.md). That’s fine, but it means that when implementation begins, the API review will happen then,
+Sometimes, due to bandwidth constraints, teams move ahead with design work without feedback from [API Review](https://git.k8s.io/community/blob/master/sig-architecture/api-review-process.md). That’s fine, but it means that when implementation begins, the API review will happen then,
 and there may be substantial feedback. So we get involved when a new API is created or an existing
 API is changed, either at design or implementation.
 
 **FM: Is this during the Kubernetes Enhancement Proposal (KEP) process? Since KEPs are mandatory for
 enhancements, I assume part of the work intersects with API Governance?**
 
-**JL**: It can. [KEPs](https://github.com/kubernetes/enhancements/blob/master/keps/README.md) vary
+**JL**: It can. [KEPs](https://git.k8s.io/enhancements/blob/master/keps/README.md) vary
 in how detailed they are. Some include literal API definitions. When they do, we can perform an API
 review at the design stage. Then implementation becomes a matter of checking fidelity to the design.
 
@@ -136,7 +136,7 @@ objects), we can now guide CRD authors toward conventions without breaking the w
 
 **FM: How does API Governance relate to SIG Architecture and API Machinery?**
 
-**JL**: [API Machinery](https://github.com/kubernetes/apimachinery) provides the actual code and
+**JL**: [API Machinery](https://git.k8s.io/apimachinery) provides the actual code and
 tools that people build APIs on. They don’t review APIs for storage, networking, scheduling, etc.
 
 SIG Architecture sets the overall system direction and works with API Machinery to ensure the system
