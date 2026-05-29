@@ -220,6 +220,11 @@
           {{ end }}
         {{ end }}
   
+        {{ $charterLink := .charter_link }}
+        {{ $remoteCharterUrl := printf "%s%s/%s" $githubBaseUrl $dir (or $charterLink "charter.md") }}
+        {{ if and $charterLink (hasPrefix $charterLink "http") }}
+          {{ $remoteCharterUrl = $charterLink }}
+        {{ end }}
         {{ $page := dict
           "kind" "section"
           "path" (printf "committees/%s" $slug)
@@ -231,7 +236,7 @@
             "contact" .contact
             "dir" .dir
             "remote_readme_url" (printf "%s%s/README.md" $githubBaseUrl $dir)
-            "remote_charter_url" (printf "%s%s/charter.md" $githubBaseUrl $dir)
+            "remote_charter_url" $remoteCharterUrl
           )
           "content" (dict
             "mediaType" "text/markdown"
@@ -239,10 +244,9 @@
           )
         }}
         {{ $.AddPage $page }}
-  
-        {{/* Fetch Charter Content */}}
-        {{ if and (ne $dir "committee-security-response") (ne $dir "committee-steering") }}
-          {{ $charterUrl := printf "%s%s/charter.md" $rawBaseUrl $dir }}
+
+        {{ if and $charterLink (not (hasPrefix $charterLink "http")) }}
+          {{ $charterUrl := printf "%s%s/%s" $rawBaseUrl $dir $charterLink }}
           {{ $charterOpts := merge $globalOpts (dict "key" (printf "charter-%s" $dir)) }}
           {{ with try (resources.GetRemote $charterUrl $charterOpts) }}
             {{ with .Err }}
@@ -258,7 +262,7 @@
                 "path" (printf "committees/%s/charter" $slug)
                 "title" (printf "%s Charter" $name)
                 "params" (dict
-                  "remote_charter_url" (printf "%s%s/charter.md" $githubBaseUrl $dir)
+                  "remote_charter_url" (printf "%s%s/%s" $githubBaseUrl $dir $charterLink)
                   "hide_summary" true
                   "toc_hide" true
                 )
