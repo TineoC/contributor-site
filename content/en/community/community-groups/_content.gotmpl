@@ -221,9 +221,12 @@
         {{ end }}
   
         {{ $charterLink := .charter_link }}
-        {{ $remoteCharterUrl := printf "%s%s/%s" $githubBaseUrl $dir (or $charterLink "charter.md") }}
-        {{ if and $charterLink (hasPrefix $charterLink "http") }}
-          {{ $remoteCharterUrl = $charterLink }}
+        {{ $remoteCharterUrl := "" }}
+        {{ if $charterLink }}
+          {{ $remoteCharterUrl = printf "%s%s/%s" $githubBaseUrl $dir $charterLink }}
+          {{ if hasPrefix $charterLink "http" }}
+            {{ $remoteCharterUrl = $charterLink }}
+          {{ end }}
         {{ end }}
         {{ $page := dict
           "kind" "section"
