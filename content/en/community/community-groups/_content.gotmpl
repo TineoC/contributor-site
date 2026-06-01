@@ -219,8 +219,7 @@
             {{ end }}
           {{ end }}
         {{ end }}
-  
-        {{ $charterLink := .charter_link }}
+{{ $charterLink := .charter_link }}
         {{ $remoteCharterUrl := "" }}
         {{ if $charterLink }}
           {{ $remoteCharterUrl = printf "%s%s/%s" $githubBaseUrl $dir $charterLink }}
@@ -228,6 +227,7 @@
             {{ $remoteCharterUrl = $charterLink }}
           {{ end }}
         {{ end }}
+
         {{ $page := dict
           "kind" "section"
           "path" (printf "committees/%s" $slug)
@@ -269,7 +269,8 @@
                   "hide_summary" true
                   "toc_hide" true
                 )
-                "content" (dict              "mediaType" "text/markdown"
+                "content" (dict
+                  "mediaType" "text/markdown"
                   "value" $charterContent
                 )
               }}
