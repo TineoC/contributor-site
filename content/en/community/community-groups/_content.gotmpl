@@ -219,7 +219,7 @@
             {{ end }}
           {{ end }}
         {{ end }}
-{{ $charterLink := .charter_link }}
+        {{ $charterLink := .charter_link }}
         {{ $remoteCharterUrl := "" }}
         {{ if $charterLink }}
           {{ $remoteCharterUrl = printf "%s%s/%s" $githubBaseUrl $dir $charterLink }}
