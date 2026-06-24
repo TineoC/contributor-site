@@ -6,6 +6,9 @@ command = "make production-build"
 NODE_VERSION = "20.17.0"
 HUGO_VERSION = "0.144.2"
 
+[context.production]
+command = "curl -sSfL https://go.dev/dl/go1.26.4.linux-amd64.tar.gz | sudo tar -xz -C /usr/local && export PATH=/usr/local/go/bin:$PATH && make production-build"
+
 [context.production.environment]
 HUGO_ENV = "production"
 
@@ -14,6 +17,9 @@ command = "make preview-build"
 
 [context.branch-deploy]
 command = "make preview-build"
+
+[build.processing.deploy_notifications]
+schedule = "0 5 * * *"
 
 
 [[redirects]]

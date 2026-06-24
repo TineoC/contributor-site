@@ -33,24 +33,25 @@ CONTAINER_HUGO_MOUNTS = \
 	--mount type=bind,source=$(CURDIR)/.git,target=/src/.git,readonly \
 	--mount type=bind,source=$(CURDIR)/assets,target=/src/assets,readonly \
 	--mount type=bind,source=$(CURDIR)/content,target=/src/content,readonly \
-	--mount type=bind,source=$(CURDIR)/external-sources,target=/src/external-sources,readonly \
 	--mount type=bind,source=$(CURDIR)/hack,target=/src/hack,readonly \
 	--mount type=bind,source=$(CURDIR)/layouts,target=/src/layouts,readonly \
 	--mount type=bind,source=$(CURDIR)/static,target=/src/static,readonly \
 	--mount type=tmpfs,destination=/tmp,tmpfs-mode=01777 \
-	--mount type=bind,source=$(CURDIR)/hugo.yaml,target=/src/hugo.yaml,readonly
+	--mount type=bind,source=$(CURDIR)/hugo.yaml,target=/src/hugo.yaml,readonly \
+	--mount type=bind,source=$(CURDIR)/go.mod,target=/src/go.mod,relabel=shared \
+	--mount type=bind,source=$(CURDIR)/go.sum,target=/src/go.sum,relabel=shared
 
-# Fast NONBLOCKING IO to stdout caused by the hack/gen-content.sh script can
-# cause Netlify builds to terminate unexpectedly. This forces stdout to block.
-BLOCK_STDOUT_CMD	:= python -c "import os,sys,fcntl; \
+# Fast NONBLOCKING IO to stdout can cause Netlify builds to terminate
+# unexpectedly. This forces stdout to block.
+BLOCK_STDOUT_CMD	:= python3 -c "import os,sys,fcntl; \
 					flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); \
 					fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);"
 
 .DEFAULT_GOAL	:= help
 
 .PHONY: targets container-targets
-targets: help gen-content render server clean clean-all production-build preview-build
-container-targets: container-image container-push container-gen-content container-render container-server
+targets: help modules-get modules-tidy render server clean clean-all production-build preview-build
+container-targets: container-image container-push container-render container-server
 
 help: ## Show this help text.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
@@ -58,8 +59,12 @@ help: ## Show this help text.
 dependencies:
 	npm ci
 
-gen-content: ## Generates content from external sources.
-	hack/gen-content.sh
+modules-get: ## Update Hugo modules to latest upstream commits (hugo mod get -u).
+	hugo mod get -u
+	hugo mod tidy
+
+modules-tidy: ## Clean up unused Hugo module entries from go.sum.
+	hugo mod tidy
 
 render: dependencies ## Build the site using Hugo on the host.
 	hugo --logLevel info --ignoreCache --minify
@@ -99,13 +104,6 @@ docker-push: ## Build a multi-architecture image and push that into the registry
 	$(DOCKER_BUILDX) stop image-builder
 	rm Dockerfile.cross
 
-docker-gen-content:
-	@echo -e "**** The use of docker-gen-content is deprecated. Use container-gen-content instead. ****" 1>&2
-	$(MAKE) container-gen-content
-
-container-gen-content: ## Generates content from external sources within a container (equiv to gen-content).
-	$(CONTAINER_RUN) $(CONTAINER_IMAGE) hack/gen-content.sh
-
 docker-render:
 	@echo -e "**** The use of docker-render is deprecated. Use container-render instead. ****" 1>&2
 	$(MAKE) container-render
@@ -123,10 +121,10 @@ container-server: ## Run Hugo locally within a container, available at http://lo
 		$(CONTAINER_HUGO_MOUNTS) \
 		--cap-drop=ALL \
 		--cap-drop=AUDIT_WRITE \
+		--mount type=bind,source=$(HOME)/go/pkg/mod,target=/tmp/gomod,relabel=shared \
+		-e GOMODCACHE=/tmp/gomod \
 		$(CONTAINER_IMAGE) \
-	bash -c 'cd /src && hack/gen-content.sh --in-container && \
-		 cd /tmp/src && \
-		hugo server \
+	bash -c 'hugo server \
 		--environment preview \
 		--logLevel info \
 		--noBuildLock \
@@ -143,38 +141,11 @@ clean: ## Cleans build artifacts.
 
 clean-all: ## Cleans both build artifacts and files synced to content directory
 	rm -rf public/ resources/ _tmp/
-	rm -f content/en/events/community-meeting.md
-	rm -f content/en/events/meet-our-contributors.md
-	rm -f content/en/events/office-hours.md
-	rm -f content/en/docs/cheatsheet.md
-	rm -f content/en/resources/rename.md
-	find content/en/docs/guide -maxdepth 1 \
-		-not -path content/en/docs/guide \
-		-not -name ".gitignore" \
-		-exec rm -rf {} \;
-	find content/en/docs/comms -maxdepth 1 \
-		-not -path content/en/docs/comms \
-		-not -name ".gitignore" \
-		-not -name "_index.md" \
-		-exec rm -rf {} \;
-	find content/en/resources/release -maxdepth 1  \
-		-not -path content/en/resources/release \
-		-not -name ".gitignore" \
-		-exec rm -rf {} \;
-	find content/en/docs/orientation -maxdepth 1 \
-		-not -path content/en/docs/orientation \
-		-not -name ".gitignore" \
-		-exec rm -rf {} \;
-	find content/en/community -maxdepth 1 \
-		-not -path content/en/community \
-		-not -name ".gitignore" \
-		-not -name "_index.md" \
-		-not -name "code-of-conduct.md" \
-		-exec rm -rf {} \;
 
 production-build: ## Builds the production site (this command used only by Netlify).
 	$(BLOCK_STDOUT_CMD)
-	hack/gen-content.sh
+	hugo mod get -u
+	hugo mod tidy
 	hugo \
 		--environment production \
 		--logLevel info \
@@ -183,7 +154,6 @@ production-build: ## Builds the production site (this command used only by Netli
 
 preview-build: ## Builds a deploy preview of the site (this command used only by Netlify).
 	$(BLOCK_STDOUT_CMD)
-	hack/gen-content.sh
 	hugo \
 		--environment preview \
 		--logLevel info \
