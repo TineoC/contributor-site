@@ -22,9 +22,9 @@ COMMIT					:= $(shell git rev-parse --short HEAD)
 CONTAINER_RUN			:= $(CONTAINER_ENGINE) run --rm -it -v "$(CURDIR):/src"
 CONTAINER_RUN_TTY		:= $(CONTAINER_ENGINE) run --rm -it
 HUGO_VERSION			:= $(shell grep ^HUGO_VERSION netlify.toml | tail -n 1 | cut -d '=' -f 2 | tr -d " \"\n")
-GO_VERSION				:= $(shell grep ^GO_VERSION netlify.toml | tail -n 1 | cut -d '=' -f 2 | tr -d " \"\n")
 UNAME_OS				:= $(shell uname -s | tr '[:upper:]' '[:lower:]')
 UNAME_ARCH				:= $(shell uname -m)
+GO_VERSION				:= $(shell grep ^GO_VERSION netlify.toml | tail -n 1 | cut -d '=' -f 2 | tr -d " \"\n")
 GO_OS					:= $(if $(findstring darwin,$(UNAME_OS)),darwin,linux)
 GO_ARCH					:= $(if $(findstring arm64,$(UNAME_ARCH)),arm64,$(if $(findstring aarch64,$(UNAME_ARCH)),arm64,amd64))
 GO_BIN					:= PATH="/tmp/go/bin:$(PATH)"
