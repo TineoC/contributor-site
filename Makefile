@@ -28,6 +28,7 @@ UNAME_ARCH				:= $(shell uname -m)
 GO_OS					:= $(if $(findstring darwin,$(UNAME_OS)),darwin,linux)
 GO_ARCH					:= $(if $(findstring arm64,$(UNAME_ARCH)),arm64,$(if $(findstring aarch64,$(UNAME_ARCH)),arm64,amd64))
 GO_BIN					:= PATH="/tmp/go/bin:$(PATH)"
+NODE_VERSION			:= $(shell grep ^NODE_VERSION netlify.toml | tail -n 1 | cut -d '=' -f 2 | tr -d " \"\n")
 GIT_TAG					?= v$(HUGO_VERSION)-$(IMAGE_VERSION)
 CONTAINER_IMAGE			:= $(IMAGE_REPO):$(GIT_TAG)
 
@@ -61,6 +62,9 @@ container-targets: container-image container-push container-render container-ser
 
 help: ## Show this help text.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+.nvmrc: netlify.toml
+	grep ^NODE_VERSION $< | tail -n 1 | cut -d '=' -f 2 | tr -d " \"\n" > $@
 
 dependencies:
 	npm ci
@@ -162,6 +166,36 @@ install-go: ## Install Go for Hugo module support.
 	}
 
 production-build: install-go ## Builds the production site (this command used only by Netlify).
+	rm -f content/en/events/community-meeting.md
+	rm -f content/en/events/meet-our-contributors.md
+	rm -f content/en/events/office-hours.md
+	rm -f content/en/docs/cheatsheet.md
+	rm -f content/en/resources/rename.md
+	find content/en/docs/guide -maxdepth 1 \
+		-not -path content/en/docs/guide \
+		-not -name ".gitignore" \
+		-exec rm -rf {} \;
+	find content/en/docs/comms -maxdepth 1 \
+		-not -path content/en/docs/comms \
+		-not -name ".gitignore" \
+		-not -name "_index.md" \
+		-exec rm -rf {} \;
+	find content/en/resources/release -maxdepth 1  \
+		-not -path content/en/resources/release \
+		-not -name ".gitignore" \
+		-exec rm -rf {} \;
+	find content/en/docs/orientation -maxdepth 1 \
+		-not -path content/en/docs/orientation \
+		-not -name ".gitignore" \
+		-exec rm -rf {} \;
+	find content/en/community -maxdepth 1 \
+		-not -path content/en/community \
+		-not -name ".gitignore" \
+		-not -name "_index.md" \
+		-not -name "code-of-conduct.md" \
+		-exec rm -rf {} \;
+
+production-build: .nvmrc ## Builds the production site (this command used only by Netlify).
 	$(BLOCK_STDOUT_CMD)
 	$(GO_BIN) hugo mod get -u
 	$(GO_BIN) hugo mod tidy
@@ -171,7 +205,7 @@ production-build: install-go ## Builds the production site (this command used on
 		--ignoreCache \
 		--minify
 
-preview-build: install-go ## Builds a deploy preview of the site (this command used only by Netlify).
+preview-build: .nvmrc install-go ## Builds a deploy preview of the site (this command used only by Netlify).
 	$(BLOCK_STDOUT_CMD)
 	$(GO_BIN) hugo \
 		--environment preview \
