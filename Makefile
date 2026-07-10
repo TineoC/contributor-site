@@ -56,7 +56,7 @@ BLOCK_STDOUT_CMD	:= python3 -c "import os,sys,fcntl; \
 .DEFAULT_GOAL	:= help
 
 .PHONY: targets container-targets install-go
-targets: help modules-update modules-download modules-tidy install-go adapt-content render server clean clean-all production-build preview-build
+targets: help modules-update modules-download modules-tidy install-go render server clean clean-all production-build preview-build
 container-targets: container-image container-push container-render container-server
 
 help: ## Show this help text.
@@ -81,13 +81,10 @@ modules-tidy: ## Clean up unused Hugo module entries from go.sum.
 modules-download: install-go ## Download pinned Hugo modules to local cache (no update).
 	$(GO_BIN) hugo mod download
 
-adapt-content: install-go modules-download ## Extract and process module content for the Hugo site.
-	PATH="/tmp/go/bin:$$PATH" hack/adapt-content.sh
-
-render: dependencies adapt-content ## Build the site using Hugo on the host.
+render: dependencies ## Build the site using Hugo on the host.
 	hugo --logLevel info --ignoreCache --minify
 
-server: dependencies adapt-content ## Run Hugo locally (if Hugo "extended" is installed locally)
+server: dependencies ## Run Hugo locally (if Hugo "extended" is installed locally)
 	hugo server \
 		--logLevel info \
 		--buildDrafts \
@@ -190,7 +187,7 @@ clean-all: ## Cleans both build artifacts and files synced to content directory
 	rm -rf /tmp/go/go /tmp/go.tgz
 	echo "$(GO_VERSION)" > $@
 
-production-build: .nvmrc install-go adapt-content ## Builds the production site (this command used only by Netlify).
+production-build: .nvmrc install-go ## Builds the production site (this command used only by Netlify).
 	rm -f content/en/events/community-meeting.md
 	rm -f content/en/events/meet-our-contributors.md
 	rm -f content/en/events/office-hours.md
@@ -227,7 +224,7 @@ production-build: .nvmrc install-go adapt-content ## Builds the production site 
 		--ignoreCache \
 		--minify
 
-preview-build: install-go .nvmrc adapt-content ## Builds a deploy preview of the site (this command used only by Netlify).
+preview-build: install-go .nvmrc ## Builds a deploy preview of the site (this command used only by Netlify).
 	$(BLOCK_STDOUT_CMD)
 	$(GO_BIN) hugo mod get -u
 	$(GO_BIN) hugo mod tidy
