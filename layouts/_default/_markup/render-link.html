@@ -1,12 +1,25 @@
 {{- $u := .Destination -}}
-{{- /* 
-  Robustly handle URLs with parentheses or extra spaces from external sources (e.g. KEP READMEs).
-  This prevents build failures like "first path segment in URL cannot contain colon" when 
-  a link destination is wrapped in extra parentheses.
-*/ -}}
 {{- $u = trim $u " ()" -}}
-<a href="{{ $u | safeURL }}"
-  {{ with .Title }} title="{{ . }}"{{ end }}
-  {{ if strings.HasPrefix $u "http" }} target="_blank" rel="noopener"{{ end }}>
-  {{- .Text | safeHTML -}}
-</a>
+{{- $isExternal := strings.HasPrefix $u "http" -}}
+{{- $isMd := strings.HasSuffix $u ".md" -}}
+{{- if and $isMd (not $isExternal) -}}
+  {{- /* Resolve relative .md links to Hugo page permalinks */}}
+  {{- $page := .Page.GetPage $u -}}
+  {{- if $page -}}
+    <a href="{{ $page.RelPermalink }}"
+      {{ with .Title }} title="{{ . }}"{{ end }}>
+      {{- .Text | safeHTML -}}
+    </a>
+  {{- else -}}
+    <a href="{{ $u | safeURL }}"
+      {{ with .Title }} title="{{ . }}"{{ end }}>
+      {{- .Text | safeHTML -}}
+    </a>
+  {{- end -}}
+{{- else -}}
+  <a href="{{ $u | safeURL }}"
+    {{ with .Title }} title="{{ . }}"{{ end }}
+    {{ if $isExternal }} target="_blank" rel="noopener"{{ end }}>
+    {{- .Text | safeHTML -}}
+  </a>
+{{- end -}}

@@ -51,12 +51,88 @@ module:
     extended: true
     min: "0.133.0"
   # Module imports pin upstream content versions via go.sum.
-  # Content is extracted and processed by hack/adapt-content.sh,
-  # not mounted directly (to allow link rewriting, frontmatter injection, etc.).
+  # Content is mounted directly from modules (no adapt-content.sh copy step).
+  # Each import uses mounts to map source paths to target site paths,
+  # with README.md -> _index.md renaming done via individual file mounts.
   imports:
     - path: k8s.io/community
+      mounts:
+        # --- Directory mounts: content files (excluding README.md) ---
+        - source: contributors/guide
+          target: content/en/docs/guide
+          excludeFiles: "**/README.md"
+        - source: communication
+          target: content/en/docs/comms
+          excludeFiles: "**/README.md"
+        - source: mentoring
+          target: content/en/community
+          excludeFiles: "**/README.md"
+        - source: committee-code-of-conduct
+          target: content/en/community/committee-code-of-conduct
+          excludeFiles: "**/README.md"
+        - source: github-management
+          target: content/en/resources/github-management
+          excludeFiles: "**/README.md"
+
+        # --- Individual file mounts (sig-list, values, policies, etc.) ---
+        - source: sig-list.md
+          target: content/en/sig-list.md
+        - source: values.md
+          target: content/en/community/values.md
+        - source: code-of-conduct.md
+          target: content/en/includes/code-of-conduct.md
+        # CLA.md provided locally via content/en/CLA.md
+        - source: community-membership.md
+          target: content/en/community/community-membership.md
+
+        # --- README.md -> _index.md file mounts (contributors/guide) ---
+        - source: contributors/guide/README.md
+          target: content/en/docs/guide/_index.md
+        - source: contributors/guide/contributor-cheatsheet/README.md
+          target: content/en/docs/guide/contributor-cheatsheet/_index.md
+
+        # --- README.md -> _index.md file mounts (communication) ---
+        - source: communication/contributor-comms/README.md
+          target: content/en/docs/comms/contributor-comms/_index.md
+        - source: communication/contributor-comms/blogging-resources/README.md
+          target: content/en/docs/comms/contributor-comms/blogging-resources/_index.md
+        - source: communication/slack-config/README.md
+          target: content/en/docs/comms/slack-config/_index.md
+        - source: communication/youtube/README.md
+          target: content/en/docs/comms/youtube/_index.md
+
+        # --- README.md -> _index.md file mounts (mentoring -> community) ---
+        - source: mentoring/new-contributor-orientation/README.md
+          target: content/en/community/new-contributor-orientation/_index.md
+        - source: mentoring/processes/README.md
+          target: content/en/community/processes/_index.md
+        - source: mentoring/programs/README.md
+          target: content/en/community/programs/_index.md
+        - source: mentoring/programs/contributor-workshop/README.md
+          target: content/en/community/programs/contributor-workshop/_index.md
+        - source: mentoring/programs/contributor-workshop/guides/README.md
+          target: content/en/community/programs/contributor-workshop/guides/_index.md
+        - source: mentoring/programs/contributor-workshop/live-workshop/README.md
+          target: content/en/community/programs/contributor-workshop/live-workshop/_index.md
+
+        # --- README.md -> _index.md (committee-code-of-conduct) ---
+        - source: committee-code-of-conduct/README.md
+          target: content/en/community/committee-code-of-conduct/_index.md
+
+        # --- README.md -> _index.md (github-management) ---
+        - source: github-management/README.md
+          target: content/en/resources/github-management/_index.md
+
     - path: github.com/cncf/foundation
+      mounts:
+        - source: code-of-conduct.md
+          target: content/en/includes/cncf-code-of-conduct.md
+
     - path: github.com/kubernetes/sig-release
+      mounts:
+        - source: releases/release-1.37/README.md
+          target: content/en/resources/release/index.md
+
   # Use npm-installed copies of Docsy Hugo Module deps so Hugo skips `go get`
   # at build time. The `go get` walks go.mod transitive imports and fails
   # wherever the dependency is absent (e.g. Netlify).
