@@ -40,7 +40,6 @@ CONTAINER_HUGO_MOUNTS = \
 	--mount type=bind,source=$(CURDIR)/.git,target=/src/.git,readonly \
 	--mount type=bind,source=$(CURDIR)/assets,target=/src/assets,readonly \
 	--mount type=bind,source=$(CURDIR)/content,target=/src/content,readonly \
-	--mount type=bind,source=$(CURDIR)/hack,target=/src/hack,readonly \
 	--mount type=bind,source=$(CURDIR)/layouts,target=/src/layouts,readonly \
 	--mount type=bind,source=$(CURDIR)/static,target=/src/static,readonly \
 	--mount type=tmpfs,destination=/tmp,tmpfs-mode=01777 \
@@ -56,8 +55,8 @@ BLOCK_STDOUT_CMD	:= python3 -c "import os,sys,fcntl; \
 
 .DEFAULT_GOAL	:= help
 
-.PHONY: targets container-targets
-targets: help modules-update modules-download modules-tidy install-go render server clean clean-all production-build preview-build
+.PHONY: targets container-targets install-go
+targets: help modules-update modules-download modules-tidy install-go adapt-content render server clean clean-all production-build preview-build
 container-targets: container-image container-push container-render container-server
 
 help: ## Show this help text.
@@ -69,6 +68,9 @@ help: ## Show this help text.
 dependencies:
 	npm ci
 
+.nvmrc: netlify.toml
+	grep ^NODE_VERSION $< | tail -n 1 | cut -d '=' -f 2 | tr -d " \"\n" > $@
+
 modules-update: ## Update Hugo modules to latest upstream commits.
 	$(GO_BIN) hugo mod get -u
 	$(GO_BIN) hugo mod tidy
@@ -76,13 +78,16 @@ modules-update: ## Update Hugo modules to latest upstream commits.
 modules-tidy: ## Clean up unused Hugo module entries from go.sum.
 	$(GO_BIN) hugo mod tidy
 
-modules-download: ## Download pinned Hugo modules to local cache (no update).
+modules-download: install-go ## Download pinned Hugo modules to local cache (no update).
 	$(GO_BIN) hugo mod download
 
-render: dependencies ## Build the site using Hugo on the host.
+adapt-content: install-go modules-download ## Extract and process module content for the Hugo site.
+	PATH="/tmp/go/bin:$$PATH" hack/adapt-content.sh
+
+render: dependencies adapt-content ## Build the site using Hugo on the host.
 	hugo --logLevel info --ignoreCache --minify
 
-server: dependencies ## Run Hugo locally (if Hugo "extended" is installed locally)
+server: dependencies adapt-content ## Run Hugo locally (if Hugo "extended" is installed locally)
 	hugo server \
 		--logLevel info \
 		--buildDrafts \
@@ -154,18 +159,38 @@ clean: ## Cleans build artifacts.
 
 clean-all: ## Cleans both build artifacts and files synced to content directory
 	rm -rf public/ resources/ _tmp/
+	rm -f content/en/events/community-meeting.md
+	rm -f content/en/events/meet-our-contributors.md
+	rm -f content/en/events/office-hours.md
+	rm -f content/en/docs/cheatsheet.md
+	rm -f content/en/resources/rename.md
+	find content/en/docs/guide -maxdepth 1 \
+		-not -path content/en/docs/guide \
+		-not -name ".gitignore" -exec rm -rf {} \;
+	find content/en/docs/comms -maxdepth 1 \
+		-not -path content/en/docs/comms \
+		-not -name ".gitignore" -not -name "_index.md" -exec rm -rf {} \;
+	find content/en/resources/release -maxdepth 1  \
+		-not -path content/en/resources/release \
+		-not -name ".gitignore" -exec rm -rf {} \;
+	find content/en/docs/orientation -maxdepth 1 \
+		-not -path content/en/docs/orientation \
+		-not -name ".gitignore" -exec rm -rf {} \;
+	find content/en/community -maxdepth 1 \
+		-not -path content/en/community \
+		-not -name ".gitignore" -not -name "_index.md" \
+		-not -name "code-of-conduct.md" -exec rm -rf {} \;
 
-install-go: ## Install Go for Hugo module support.
-	$(GO_BIN) go version 2>/dev/null | grep -qF "go$(GO_VERSION)" || { \
-		rm -rf /tmp/go; \
-		curl -sSfL "https://go.dev/dl/go$(GO_VERSION).$(GO_OS)-$(GO_ARCH).tar.gz" -o /tmp/go.tgz; \
-		mkdir -p /tmp/go; \
-		tar -xz -C /tmp/go -f /tmp/go.tgz; \
-		mv /tmp/go/go/* /tmp/go/; \
-		rm -rf /tmp/go/go; \
-	}
+/tmp/go/.go-version: netlify.toml
+	rm -rf /tmp/go /tmp/go.tgz
+	curl -sSfL "https://go.dev/dl/go$(GO_VERSION).$(GO_OS)-$(GO_ARCH).tar.gz" -o /tmp/go.tgz
+	mkdir -p /tmp/go
+	tar -xz -C /tmp/go -f /tmp/go.tgz
+	mv /tmp/go/go/* /tmp/go/
+	rm -rf /tmp/go/go /tmp/go.tgz
+	echo "$(GO_VERSION)" > $@
 
-production-build: install-go ## Builds the production site (this command used only by Netlify).
+production-build: .nvmrc install-go adapt-content ## Builds the production site (this command used only by Netlify).
 	rm -f content/en/events/community-meeting.md
 	rm -f content/en/events/meet-our-contributors.md
 	rm -f content/en/events/office-hours.md
@@ -195,18 +220,17 @@ production-build: install-go ## Builds the production site (this command used on
 		-not -name "code-of-conduct.md" \
 		-exec rm -rf {} \;
 
-production-build: .nvmrc ## Builds the production site (this command used only by Netlify).
 	$(BLOCK_STDOUT_CMD)
-	$(GO_BIN) hugo mod get -u
-	$(GO_BIN) hugo mod tidy
 	$(GO_BIN) hugo \
 		--environment production \
 		--logLevel info \
 		--ignoreCache \
 		--minify
 
-preview-build: .nvmrc install-go ## Builds a deploy preview of the site (this command used only by Netlify).
+preview-build: install-go .nvmrc adapt-content ## Builds a deploy preview of the site (this command used only by Netlify).
 	$(BLOCK_STDOUT_CMD)
+	$(GO_BIN) hugo mod get -u
+	$(GO_BIN) hugo mod tidy
 	$(GO_BIN) hugo \
 		--environment preview \
 		--logLevel info \

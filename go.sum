@@ -1,2 +1,4 @@
+github.com/cncf/foundation v0.0.0-20260709151531-8c2b6d36194d h1:t5x6mfPo4L9qpPyhWY82CvbCzxnAjDuSS8qXdfMThtA=
+github.com/cncf/foundation v0.0.0-20260709151531-8c2b6d36194d/go.mod h1:Bc+TWRzbCv6T+tkQqNuwGA3cGk017o2TE5CAmu9EY/Q=
 k8s.io/community v0.0.0-20260626134825-424dd6534634 h1:EZ2XsSQ3fVY7O24iQLismTFIzJbt7NcW1YoSiBvRscE=
 k8s.io/community v0.0.0-20260626134825-424dd6534634/go.mod h1:ReZtjuSc2VEkZa1NyJuKBbu3uAcpZ7LYvKu7biy1RnE=
