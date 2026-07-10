@@ -3,5 +3,5 @@
 {{- with $resource -}}
 {{- .Content | safeHTML -}}
 {{- else -}}
-{{- errorf "Unable to fetch remote content from %s" $url -}}
+{{- warnf "Unable to fetch remote content from %s" $url -}}
 {{- end -}}
