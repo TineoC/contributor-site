@@ -2,7 +2,8 @@
 layout: blog
 title: "From Kubernetes for work to Kubernetes for play" 
 date: 2021-06-01
-Slug: peeyush-contributor-story
+slug: peeyush-contributor-story
+author: "[Peeyush Gupta](https://twitter.com/pensu91)"
 ---
 
 {{% alert color="primary" %}}
@@ -28,8 +29,6 @@ We have started to collect some of our <a href="https://github.com/cncf/memorial
 If you would like to share some of your own, please <a href="https://github.com/cncf/memorials/blob/main/peeyush-gupta.md" target="_blank" rel="noreferrer">open a PR adding your own memories of him.</a>
 
 {{% /alert %}}
-
-By [Peeyush Gupta](https://twitter.com/pensu91)
 
 My first encounter with Kubernetes was at my first job when a large banking customer wanted to evaluate Kubernetes on ppc64le architecture for application deployment. I was intrigued as it wasn't every day when a bank seeks to consider something new! That was also my first interaction with Golang and I loved it instantly. I mean, who doesn't love a cross compiled statically linked binary?! Before that, I was mostly working with Python and OpenStack, which are great as well. But Kubernetes opened a whole new world for me. Being familiar with Docker, which still was pretty new at that time, and the awesome cross-compilation capabilities of Go, I was quickly able to build a proof of concept, and my team loved it. 
 

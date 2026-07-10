@@ -1,10 +1,9 @@
 ---
-title: Contributor Social
+title: Contributor Social at La Casa Del Mar
+linkTitle: Contributor Social
 type: docs
 weight: 5
 ---
-
-## Contributor Social at La Casa Del Mar
 
 <img align="right" src="/events/2022/kcseu/casadelmar.jpg" width="30%" alt="La Casa de la Mar venue">
 
