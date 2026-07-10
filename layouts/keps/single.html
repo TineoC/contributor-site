@@ -121,7 +121,7 @@
               {{- with $.Site.GetPage (printf "community/community-groups/sigs/%s" $sigSlug) -}}
                 <a href="{{ .RelPermalink }}" class="kep-tag-link">{{ .LinkTitle | default .Title }}</a>
               {{- else -}}
-                <a href="https://github.com/kubernetes/community/tree/master/{{ $sig }}" class="kep-tag-link">
+                <a href="https://github.com/kubernetes/community/tree/main/{{ $sig }}" class="kep-tag-link">
                   {{ $sigSlug | humanize | title }}
                 </a>
               {{- end -}}
