@@ -56,6 +56,7 @@ module:
   imports:
     - path: k8s.io/community
     - path: github.com/cncf/foundation
+    - path: github.com/kubernetes/sig-release
   # Use npm-installed copies of Docsy Hugo Module deps so Hugo skips `go get`
   # at build time. The `go get` walks go.mod transitive imports and fails
   # wherever the dependency is absent (e.g. Netlify).

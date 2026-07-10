@@ -64,6 +64,8 @@ SOURCES=(
   "sig-list.md"
   "values.md"
   "code-of-conduct.md"
+  "CLA.md"
+  "community-membership.md"
 )
 DESTS=(
   "/docs/guide"
@@ -74,11 +76,17 @@ DESTS=(
   "/sig-list.md"
   "/community/values.md"
   "/includes/code-of-conduct.md"
+  "/CLA.md"
+  "/community/community-membership.md"
 )
 
 # CNCF Foundation content (code-of-conduct)
 CNCF_SOURCES=("code-of-conduct.md")
 CNCF_DESTS=("/includes/cncf-code-of-conduct.md")
+
+# SIG Release content (current release info)
+SIGRELEASE_SOURCES=("releases/release-1.37/README.md")
+SIGRELEASE_DESTS=("/resources/release/index.md")
 
 # find_md_files - Returns all markdown files within a directory
 find_md_files() {
@@ -242,6 +250,27 @@ main() {
         mkdir -p "$(dirname "$dst_path")"
         cp "$src_path" "$dst_path"
         process_file "$dst_path" "${dst}" "$cncf_mod_dir"
+      else
+        echo "  WARNING: Source not found: ${src_path}" 1>&2
+      fi
+    done
+  fi
+
+  # Process SIG Release content
+  local sigrelease_mod_dir
+  sigrelease_mod_dir="$(resolve_module "github.com/kubernetes/sig-release")"
+  if [[ -n "$sigrelease_mod_dir" ]]; then
+    echo "Processing content from $sigrelease_mod_dir" 1>&2
+    for ((i=0; i<${#SIGRELEASE_SOURCES[@]}; i++)); do
+      local src="${SIGRELEASE_SOURCES[$i]}"
+      local dst="${SIGRELEASE_DESTS[$i]}"
+      local src_path="${sigrelease_mod_dir}/${src}"
+      local dst_path="${temp_dir}${dst}"
+      echo "  ${src} -> ${dst}" 1>&2
+      if [[ -f "$src_path" ]]; then
+        mkdir -p "$(dirname "$dst_path")"
+        cp "$src_path" "$dst_path"
+        process_file "$dst_path" "${dst}" "$sigrelease_mod_dir"
       else
         echo "  WARNING: Source not found: ${src_path}" 1>&2
       fi
