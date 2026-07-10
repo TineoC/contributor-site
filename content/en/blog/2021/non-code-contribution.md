@@ -2,9 +2,8 @@
 title: "How to choose a SIG as a non-code Kubernetes contributor"
 linkTitle: "How to choose a SIG as a non-code Kubernetes contributor"
 date: 2021-07-09
-author: "Chris Short"
+author: "[Chris Short](https://twitter.com/ChrisShort)"
 ---
-By [Chris Short](https://twitter.com/ChrisShort)
 
 Kubernetes contributors aren't people in capes or part of some secret society. How to start committing to the GitHub repos that make up the project [is well documented](https://www.kubernetes.dev/docs/guide/), yet it remains intimidating for many.
 
