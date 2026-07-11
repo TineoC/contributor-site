@@ -7,11 +7,11 @@ description: |
     contribute to it.
 ---
 
-# Section 9: Documentation
+## Section 9: Documentation
 
 ---
 
-# What you're about to learn
+## What you're about to learn
 
 This unit is about documentation, and by the end, you will:
 
@@ -23,7 +23,7 @@ This unit is about documentation, and by the end, you will:
 
 ---
 
-# How is the Kubernetes documentation organized?
+## How is the Kubernetes documentation organized?
 
 The documentation for the Kubernetes project can be divided into a number of categories.
 
@@ -33,7 +33,7 @@ The documentation for the Kubernetes project can be divided into a number of cat
 
 ---
 
-# What is the user-facing Kubernetes documentation?
+## What is the user-facing Kubernetes documentation?
 
 The user-facing documentation deals with how to install, configure, and operate Kubernetes and its subsystems.
 
@@ -42,17 +42,17 @@ The user-facing documentation deals with how to install, configure, and operate 
 
 ---
 
-# What is the community documentation?
+## What is the community documentation?
 
 The [community documentation](https://www.kubernetes.dev/) is an informal collection of docs maintained by contributors. It consists of:
 
 * [The Contributor Guide](/docs/)
-* [The Developer Guide](https://github.com/kubernetes/community/tree/master/contributors/devel/)
+* [The Developer Guide](https://github.com/kubernetes/community/tree/main/contributors/devel/)
 * [The Community website](https://www.kubernetes.dev/)
 
 ---
 
-# What is the SIG documentation?
+## What is the SIG documentation?
 
 Each SIG is in control of some aspect of Kubernetes development, infrastructure, or community.
 
@@ -60,11 +60,11 @@ Each SIG is in control of some aspect of Kubernetes development, infrastructure,
 * Consequently, the documentation is stored in many different places and varies widely in how complete it is.
 * Here are some of the best:
     * [SIG Release](https://github.com/kubernetes/sig-release) handles the process of releasing new Kubernetes versions.
-    * You already saw lots of [SIG Testing documentation](https://github.com/kubernetes/community/tree/master/contributors/devel/sig-testing) in a previous unit.
+    * You already saw lots of [SIG Testing documentation](https://github.com/kubernetes/community/tree/main/contributors/devel/sig-testing) in a previous unit.
 
 ---
 
-# Is the documentation available in other languages?
+## Is the documentation available in other languages?
 
 Kubernetes is used by developers and DevOps people _all over the world._ It is important that the documentation is available in other languages.
 
@@ -74,13 +74,13 @@ Kubernetes is used by developers and DevOps people _all over the world._ It is i
 
 ---
 
-# Who is responsible for the documentation?
+## Who is responsible for the documentation?
 
 YOU ARE! <!-- .element: class="r-fit-text" -->
 
 ---
 
-# No, seriously!
+## No, seriously!
 
 All of the contributors are responsible for documentation.
 
@@ -92,7 +92,7 @@ When you make a change, document it.
 
 ---
 
-# What is the process for updating the documentation?
+## What is the process for updating the documentation?
 
 Documentation updates follow the same process as any other contribution.
 
@@ -102,7 +102,7 @@ Documentation updates follow the same process as any other contribution.
 
 ---
 
-# Where can I find documentation and Style guidance?
+## Where can I find documentation and Style guidance?
 
 When writing or updating documentation, follow the project guidance.
 
@@ -111,7 +111,7 @@ When writing or updating documentation, follow the project guidance.
 
 ---
 
-# How do we keep the documentation useful and consistent?
+## How do we keep the documentation useful and consistent?
 
 Of course the last slide is the million dollar question.
 

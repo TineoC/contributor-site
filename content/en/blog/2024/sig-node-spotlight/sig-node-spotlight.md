@@ -16,7 +16,7 @@ Today, I have the privilege of speaking with
 [Matthias Bertschy](https://www.linkedin.com/in/matthias-bertschy-b427b815/),
 [Gunju Kim](https://www.linkedin.com/in/gunju-kim-916b33190/), and
 [Sergey Kanzhelev](https://www.linkedin.com/in/sergeykanzhelev/), members of
-[SIG Node](https://github.com/kubernetes/community/blob/master/sig-node/README.md),
+[SIG Node](https://github.com/kubernetes/community/blob/main/sig-node/README.md),
 who will shed some light on their roles, challenges, and the exciting developments within SIG Node.
 
 _Answers given collectively by all interviewees will be marked by their initials._
@@ -217,7 +217,7 @@ In addition to the Sidecar KEP, there are many other areas where SIG Node needs 
   function as intended across a variety of scenarios.
 
 
-# Conclusion
+## Conclusion
 
 In conclusion, SIG Node stands as a cornerstone in Kubernetes' journey, ensuring its reliability and
 adaptability in the ever-changing landscape of cloud-native computing. With dedicated members like
