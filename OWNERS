@@ -1,23 +1,10 @@
 # See the OWNERS docs at https://go.k8s.io/owners
 
-filters:
-  ".*":
-    approvers:
-      - jberkus
-      - jeefy
-      - lmktfy
-      - mrbobbytables
-      - natalisucks
-      - nimbinatus
-      - reylejano
-      - stmcginnis
-      - TineoC
-      - tokt
-      - sig-contributor-experience-leads
-  # files/directories related to static site generator and localization framework
-  "^(assets|layouts|static|package-lock\\.json|package\\.json|netlify\\.toml|hugo\\.yaml|content/.*)$":
-    approvers:
-      - sig-contribex-website-owners
-    reviewers:
-      - SayakMukhopadhyay
-      - sig-contribex-website-reviewers
+reviewers:
+- sig-contribex-website-reviewers
+
+approvers:
+- sig-contribex-website-owners
+
+labels:
+- sig/contributor-experience

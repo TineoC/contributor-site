@@ -3,13 +3,12 @@ aliases:
     - dims
     - derekwaynecarr
     - johnbelamaric
-  sig-contributor-experience-leads: &contribex-leads
+  sig-contribex-website-owners:
     - kaslin
     - MadhavJivrajani
     - mfahlandt
     - palnabarun
     - Priyankasaggu11929
-  sig-contribex-website-owners: *contribex-leads
   sig-contribex-website-reviewers:
     - jberkus
     - jeefy
@@ -18,7 +17,25 @@ aliases:
     - natalisucks
     - nimbinatus
     - reylejano
+    - SayakMukhopadhyay
     - stmcginnis
     - TineoC
     - tokt
-
+  sig-contribex-en-owners:
+    - kaslin
+    - MadhavJivrajani
+    - mfahlandt
+    - palnabarun
+    - Priyankasaggu11929
+  sig-contribex-en-reviews:
+    - jberkus
+    - jeefy
+    - lmktfy
+    - mrbobbytables
+    - natalisucks
+    - nimbinatus
+    - reylejano
+    - SayakMukhopadhyay
+    - stmcginnis
+    - TineoC
+    - tokt
