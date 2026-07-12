@@ -432,3 +432,80 @@
     min-width: 44px;
   }
 }
+// Docsy & Bootstrap 5 Dark Mode Compatibility Layer for DataTables
+[data-bs-theme="dark"] {
+
+  // 1. Text color normalization across layout and metadata strings
+  .dataTables_wrapper {
+    .dataTables_length,
+    .dataTables_info,
+    .dataTables_paginate {
+      &, label, a, span {
+        color: var(--bs-body-color) !important;
+      }
+    }
+  }
+
+  // Form dropdown elements and native browser option wrapper panels
+  select,
+  .form-select {
+    color: var(--bs-body-color) !important;
+    background-color: var(--bs-body-bg) !important;
+
+    option {
+      color: var(--bs-body-color) !important;
+      background-color: var(--bs-body-bg) !important;
+    }
+  }
+
+  // Pagination buttons, active pages, and previous/next states
+  .dataTables_wrapper .dataTables_paginate {
+    .paginate_button {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+
+      // Handle standard page number and next/prev text hovers cleanly
+      &:hover {
+        color: var(--bs-link-hover-color) !important;
+        background: var(--bs-tertiary-bg) !important;
+      }
+
+      // The active/current page button
+      &.current {
+        &, &:hover {
+          color: #ffffff !important;
+          background: var(--bs-primary) !important;
+          border-color: var(--bs-primary) !important;
+        }
+      }
+
+      // Explicit target for "Previous" and "Next" layout states
+      &.previous, &.next {
+        &, a, span {
+          color: var(--bs-body-color) !important;
+        }
+
+        // Configuration for disabled states (Forces full brightness/opacity)
+        &.disabled {
+          &, &:hover, &:active, a, span {
+            color: var(--bs-body-color, #ffffff) !important;
+            background: transparent !important;
+            border-color: transparent !important;
+            cursor: default !important;
+            opacity: 1 !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Global Layout Adjustments (Fixes sorting arrow overlap)
+
+table.dataTable thead {
+  th, td {
+    &.sorting, &.sorting_asc, &.sorting_desc {
+      padding-right: 35px !important;
+    }
+  }
+}

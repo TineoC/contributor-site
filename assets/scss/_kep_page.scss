@@ -299,6 +299,20 @@
       color: #3a3a3a;
     }
 
+    [data-bs-theme="dark"] & {
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: var(--bs-heading-color);
+      }
+
+      p {
+        color: var(--bs-body-color);
+      }
+    }
+
     // Ensure images don't overflow
     img {
       max-width: 100%;
