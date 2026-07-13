@@ -387,7 +387,7 @@
 
       [data-bs-theme="dark"] & {
         background-color: #1b1f22;
-        border-color: #495057;
+        border-color: var(--bs-border-color);
       }
 
       code {

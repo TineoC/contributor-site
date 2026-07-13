@@ -240,7 +240,7 @@
   }
 
   .kep-latest-deprecated {
-    color: $slate-500;
+    color: var(--bs-secondary-color);
   }
 }
 
@@ -305,7 +305,7 @@
 
       &.current {
         background: $primary;
-        color: #fff !important; // beats DataTables' own !important on button color
+        color: var(--bs-light) !important; // beats DataTables' own !important on button color
         border-color: $primary;
       }
 
@@ -473,7 +473,7 @@
       // The active/current page button
       &.current {
         &, &:hover {
-          color: #ffffff !important;
+          color: var(--bs-light) !important;
           background: var(--bs-primary) !important;
           border-color: var(--bs-primary) !important;
         }

@@ -13,8 +13,8 @@
   .dropdown-toggle, 
   .td-theme-toggle {
     &, svg, i, &::after {
-      color: #ffffff;
-      fill: #ffffff;
+      color: var(--bs-light);
+      fill: var(--bs-light);
     }
   }
 }

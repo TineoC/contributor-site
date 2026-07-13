@@ -6,13 +6,13 @@
 
   &.active {
     background-color: var(--bs-primary);
-    color: #fff;
+    color: var(--bs-light);
   }
 }
 [data-bs-theme="dark"] {
   .badge.bg-secondary.bg-opacity-10 {
-    background-color: #343a40 !important;
-    color: #f8f9fa !important;
+    background-color: var(--bs-gray-700) !important;
+    color: var(--bs-gray-100) !important;
   }
 }
 

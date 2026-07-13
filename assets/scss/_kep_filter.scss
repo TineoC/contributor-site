@@ -143,7 +143,7 @@
 
       &[aria-checked="true"] {
         background: $kep-deprecated-soft;
-        border-color: $slate-400;
+        border-color: var(--bs-border-color);
       }
     }
 
