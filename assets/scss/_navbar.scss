@@ -8,16 +8,13 @@
 
 .td-navbar.scrolled {
   background-color: rgba($primary, 0.95) !important; // overrides Docsy's navbar background
-}
 
-.td-navbar, .navbar {
   .nav-link, 
   .dropdown-toggle, 
   .td-theme-toggle {
     &, svg, i, &::after {
       color: #ffffff;
       fill: #ffffff;
-      opacity: 1;
     }
   }
 }
