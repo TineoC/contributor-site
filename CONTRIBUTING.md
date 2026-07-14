@@ -31,6 +31,11 @@ can contribute and provide guidance on the contributor site.
 If you are interested in starting a new localization from scratch, first see the
 [SIG Docs Localization guide](https://kubernetes.io/docs/contribute/localization/#start-a-new-localization).
 
+> **Note:** A new localization requires at least two contributors so that pull
+> requests can be reviewed and approved by members of the localization team.
+> See the [SIG Docs Localization guide](https://kubernetes.io/docs/contribute/localization/#start-a-new-localization)
+> for more information.
+
 #### Branch Convention
 For the initial localization setup, open a PR from a branch named `i18n/<lang-code>` (e.g., `i18n/ko`) against `main`.
 

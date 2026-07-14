@@ -2,6 +2,9 @@
 
 This directory contains the English localization of the Kubernetes Contributor Site.
 
+For information on starting or contributing to a localization, see the
+[Localization section in CONTRIBUTING.md](../CONTRIBUTING.md#localization-l10n).
+
 ## Contact
 - **SIG Contribex**: [#sig-contribex](https://kubernetes.slack.com/messages/sig-contribex)
 - **SIG Docs Localizations**: [#sig-docs-localizations](https://kubernetes.slack.com/messages/sig-docs-localizations) (for localization contributions and support)
