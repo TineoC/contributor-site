@@ -16,7 +16,7 @@ If your repo has certain guidelines for contribution, put them here ahead of the
 - [Kubernetes Contributor Guide](http://git.k8s.io/community/contributors/guide) - Main contributor documentation, or you can just jump directly to the [contributing section](http://git.k8s.io/community/contributors/guide#contributing)
 - [Contributor Cheat Sheet](https://git.k8s.io/community/contributors/guide/contributor-cheatsheet) - Common resources for existing developers
 
-## Localization (i18n)
+## Localization (l10n)
 
 We welcome contributions to localize `kubernetes.dev` for the contributor community.
 
@@ -32,7 +32,7 @@ If you are interested in starting a new localization from scratch, first see the
 [SIG Docs Localization guide](https://kubernetes.io/docs/contribute/localization/#start-a-new-localization).
 
 #### Branch Convention
-Open a PR from a branch named `i18n/<lang-code>` (e.g., `i18n/ko`).
+For the initial localization setup, open a PR from a branch named `i18n/<lang-code>` (e.g., `i18n/ko`) against `main`.
 
 #### Setup Steps
 
