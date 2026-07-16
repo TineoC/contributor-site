@@ -1,0 +1,418 @@
+{{ $apiKey := or (getenv "HUGO_GOOGLE_CALENDAR_API_KEY") .Site.Params.google_calendar_api_key "" }}
+
+{{ if hugo.IsProduction }}
+  {{ if not $apiKey }}
+    {{ errorf "Google Calendar API key is required for production builds (set via HUGO_GOOGLE_CALENDAR_API_KEY environment variable or google_calendar_api_key site parameter)" }}
+  {{ end }}
+{{ end }}
+
+{{ $calPage := .Site.GetPage "resources/community-calendar.md" }}
+{{ $calLink := $calPage.RelPermalink | default "/resources/calendar/" }}
+{{ $nco := .Site.Data.nco }}
+
+{{ $ncoData := dict
+  "calendarId" $nco.calendar_id
+  "searchQuery" $nco.search_query
+  "emeaLabel" $nco.session_times.emea.label
+  "amerLabel" $nco.session_times.amer.label
+  "calLink" $calLink
+  "apiKey" $apiKey
+}}
+
+<div class="metadata-container nco-container my-4" id="nco-root" data-nco='{{ $ncoData | jsonify }}' aria-label="Kubernetes New Contributor Orientation">
+
+  <div class="d-flex flex-column align-items-center justify-content-center py-5" id="nco-loading" aria-live="polite">
+    <div class="nco-loader mb-3"></div>
+    <span class="small fw-bold text-uppercase nco-muted">Fetching next session...</span>
+  </div>
+
+  <div class="nco-state d-none" id="nco-card">
+    <div class="mb-4" id="nco-date-header">
+      <span class="metadata-sublabel">
+        <span class="nco-pulse-dot"></span>Next Session Date
+      </span>
+      <h3 class="fw-bold h3 mt-1 mb-0" id="nco-date-display">—</h3>
+    </div>
+    <div class="d-flex flex-column mb-4" id="nco-sessions-grid"></div>
+  </div>
+
+  <div class="nco-state d-none" id="nco-fallback">
+    <div class="mb-4">
+      <span class="metadata-sublabel" id="nco-fallback-sublabel">Typical schedule (unconfirmed)</span>
+      <h3 class="fw-bold h3 mt-1 mb-0">{{ $nco.schedule }}</h3>
+      <p class="small nco-muted mb-0 mt-2" id="nco-fallback-message">
+        No upcoming sessions found on the community calendar yet.
+        Exact timing depends on available leads — check the calendar and mailing list.
+      </p>
+    </div>
+
+    <div class="d-flex flex-column mb-4">
+      <div class="nco-session-row nco-session-row--unconfirmed d-flex align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3 flex-grow-1">
+          <div class="nco-globe-icon-wrapper">
+            <i class="fas fa-globe-europe" aria-hidden="true"></i>
+          </div>
+          <div>
+            <div class="nco-session-title-text fw-bold">{{ $nco.session_times.emea.label }}</div>
+            <div class="nco-session-time-text small">{{ $nco.session_times.emea.timezone_string }}</div>
+          </div>
+        </div>
+        <a href="{{ $calLink }}" target="_blank" rel="noopener" class="nco-action-btn" aria-label="Check calendar" title="Check calendar">
+          <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <div class="nco-session-row nco-session-row--unconfirmed d-flex align-items-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3 flex-grow-1">
+          <div class="nco-globe-icon-wrapper">
+            <i class="fas fa-globe-americas" aria-hidden="true"></i>
+          </div>
+          <div>
+            <div class="nco-session-title-text fw-bold">{{ $nco.session_times.amer.label }}</div>
+            <div class="nco-session-time-text small">{{ $nco.session_times.amer.timezone_string }}</div>
+          </div>
+        </div>
+        <a href="{{ $calLink }}" target="_blank" rel="noopener" class="nco-action-btn" aria-label="Check calendar" title="Check calendar">
+          <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-4 nco-connected-section">
+    <div class="row g-4">
+      <div class="col-md-6 mt-0">
+        <span class="metadata-sublabel">Slack Channels</span>
+        <div class="d-flex flex-column gap-1 mt-2">
+          <a href="{{ $nco.links.slack_new_contributors }}" target="_blank" rel="noopener" class="nco-connected-link">
+            <i class="fab fa-slack" aria-hidden="true"></i>
+            <span>#kubernetes-new-contributors</span>
+          </a>
+          <a href="{{ $nco.links.slack_sig_contribex }}" target="_blank" rel="noopener" class="nco-connected-link">
+            <i class="fab fa-slack" aria-hidden="true"></i>
+            <span>#sig-contribex</span>
+          </a>
+          <div class="small nco-connected-invite">
+            New to Slack? Get invite at <a href="{{ $nco.links.slack_join }}" target="_blank" rel="noopener" class="fw-semibold nco-inline-link">slack.k8s.io</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mt-md-0 mt-4">
+        <span class="metadata-sublabel">Mailing Lists</span>
+        <div class="d-flex flex-column gap-1 mt-2">
+          <a href="{{ $nco.links.mailing_list }}" target="_blank" rel="noopener" class="nco-connected-link">
+            <i class="far fa-envelope" aria-hidden="true"></i>
+            <span>SIG ContribEx</span>
+          </a>
+          <a href="{{ $nco.links.dev_mailing_list }}" target="_blank" rel="noopener" class="nco-connected-link">
+            <i class="far fa-envelope" aria-hidden="true"></i>
+            <span>dev@kubernetes.io</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-4 mt-4 nco-connected-section">
+    <div class="nco-footer-links">
+      <a href="{{ $nco.links.youtube_playlist }}" target="_blank" rel="noopener" class="nco-footer-btn">
+        <i class="fab fa-youtube" aria-hidden="true"></i> Recordings
+      </a>
+      <a href="{{ $calLink }}" target="_blank" rel="noopener" class="nco-footer-btn">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i> Calendar
+      </a>
+      <a href="{{ $nco.links.slide_deck }}" target="_blank" rel="noopener" class="nco-footer-btn">
+        <i class="fas fa-file-pdf" aria-hidden="true"></i> Slides
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('nco-root');
+  var d = JSON.parse(root.dataset.nco);
+
+  var loadingEl  = document.getElementById('nco-loading');
+  var cardEl     = document.getElementById('nco-card');
+  var fallbackEl = document.getElementById('nco-fallback');
+  var dateHeader = document.getElementById('nco-date-header');
+  var dateEl     = document.getElementById('nco-date-display');
+  var gridEl     = document.getElementById('nco-sessions-grid');
+  var fbSublabel = document.getElementById('nco-fallback-sublabel');
+  var fbMessage  = document.getElementById('nco-fallback-message');
+
+  var ncoMatcher = /new contributor orientation|nco/i;
+  var JOIN_HOSTS = ['zoom.us', 'meet.google.com'];
+  var CAL_HOSTS = ['google.com', 'calendar.google.com'];
+
+  function show(el) {
+    [loadingEl, cardEl, fallbackEl].forEach(function (e) { e.classList.add('d-none'); });
+    el.classList.remove('d-none');
+  }
+
+  function el(tag, className) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    return node;
+  }
+
+  function icon(classes) {
+    var i = el('i', classes);
+    i.setAttribute('aria-hidden', 'true');
+    return i;
+  }
+
+  function hostAllowed(hostname, allowed) {
+    var host = hostname.toLowerCase();
+    for (var i = 0; i < allowed.length; i++) {
+      var base = allowed[i];
+      if (host === base || host.endsWith('.' + base)) return true;
+    }
+    return false;
+  }
+
+  function safeHttpUrl(raw, allowedHosts) {
+    if (!raw || typeof raw !== 'string') return '';
+    try {
+      var u = new URL(raw);
+      if (u.protocol !== 'http:' && u.protocol !== 'https:') return '';
+      if (allowedHosts && !hostAllowed(u.hostname, allowedHosts)) return '';
+      return u.href;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function regionOf(ev) {
+    var s = ev.summary || '';
+    if (/EMEA|APAC/i.test(s)) return 'emea';
+    if (/\bAMER\b/i.test(s)) return 'amer';
+    var hour = new Date(ev.start.dateTime || ev.start.date).getUTCHours();
+    return hour < 12 ? 'emea' : 'amer';
+  }
+
+  function eventStart(ev) {
+    return new Date(ev.start.dateTime || ev.start.date);
+  }
+
+  function eventEnd(ev) {
+    if (ev.end && (ev.end.dateTime || ev.end.date)) {
+      return new Date(ev.end.dateTime || ev.end.date);
+    }
+    return new Date(eventStart(ev).getTime() + 60 * 60 * 1000);
+  }
+
+  function utcDayKey(date) {
+    return date.getUTCFullYear() + '-' + date.getUTCMonth() + '-' + date.getUTCDate();
+  }
+
+  function extractJoinLink(ev) {
+    var candidates = [];
+    if (ev.location) candidates.push(ev.location);
+    if (ev.hangoutLink) candidates.push(ev.hangoutLink);
+    if (ev.description) {
+      var re = /https?:\/\/[^\s"'<>]+/gi;
+      var m;
+      while ((m = re.exec(ev.description)) !== null) {
+        candidates.push(m[0].replace(/[.,);]+$/, ''));
+      }
+    }
+    for (var i = 0; i < candidates.length; i++) {
+      var safe = safeHttpUrl(candidates[i], JOIN_HOSTS);
+      if (safe) return safe;
+    }
+    return '';
+  }
+
+  function actionBtn(href, ariaLabel, iconClass) {
+    var a = el('a', 'nco-action-btn');
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.setAttribute('aria-label', ariaLabel);
+    a.title = ariaLabel;
+    a.appendChild(icon(iconClass));
+    return a;
+  }
+
+  function appendRow(parent, ev, region, now) {
+    var isEMEA = region === 'emea';
+    var label = isEMEA ? d.emeaLabel : d.amerLabel;
+    var iconClass = isEMEA ? 'fas fa-globe-europe' : 'fas fa-globe-americas';
+    var shortLabel = isEMEA ? 'EMEA/APAC' : 'AMER';
+    var row = el('div', 'nco-session-row d-flex align-items-center justify-content-between gap-3');
+
+    if (!ev) {
+      row.className += ' nco-session-row--unconfirmed';
+      var pending = el('div', 'd-flex align-items-center gap-3 flex-grow-1');
+      var wrap = el('div', 'nco-globe-icon-wrapper');
+      wrap.appendChild(icon('fas fa-info-circle'));
+      pending.appendChild(wrap);
+      var text = el('div');
+      var line = el('div', 'small');
+      line.textContent = shortLabel + ' \u2014 not scheduled yet';
+      var hint = el('div', 'small nco-muted');
+      hint.textContent = 'Watch the community calendar';
+      text.appendChild(line);
+      text.appendChild(hint);
+      pending.appendChild(text);
+      row.appendChild(pending);
+      row.appendChild(actionBtn(d.calLink, 'Check calendar', 'far fa-calendar-alt'));
+      parent.appendChild(row);
+      return;
+    }
+
+    var start = eventStart(ev);
+    var end = eventEnd(ev);
+    var ended = end <= now;
+    var joinLink = ended ? '' : extractJoinLink(ev);
+    var calEvLink = safeHttpUrl(ev.htmlLink || '', CAL_HOSTS);
+
+    var timeStr = start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    if (ev.end) {
+      timeStr += ' - ' + end.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    } else {
+      timeStr += ' ' + start.toLocaleTimeString(undefined, { timeZoneName: 'short' }).split(' ').pop();
+    }
+    if (ended) {
+      timeStr += ' (ended)';
+      row.className += ' nco-session-row--unconfirmed';
+    }
+
+    var linkOrDiv = calEvLink ? el('a', 'nco-session-link d-flex align-items-center gap-3') : el('div', 'd-flex align-items-center gap-3 flex-grow-1');
+    if (calEvLink) {
+      linkOrDiv.href = calEvLink;
+      linkOrDiv.target = '_blank';
+      linkOrDiv.rel = 'noopener';
+    }
+    var globe = el('div', 'nco-globe-icon-wrapper');
+    globe.appendChild(icon(iconClass));
+    linkOrDiv.appendChild(globe);
+    var meta = el('div');
+    var title = el('div', 'nco-session-title-text fw-bold');
+    title.textContent = label;
+    var time = el('div', 'nco-session-time-text small');
+    time.textContent = timeStr;
+    meta.appendChild(title);
+    meta.appendChild(time);
+    linkOrDiv.appendChild(meta);
+    row.appendChild(linkOrDiv);
+
+    var actions = el('div', 'd-flex align-items-center gap-2');
+    if (joinLink) {
+      actions.appendChild(actionBtn(joinLink, 'Join Meeting', 'fas fa-video'));
+    }
+    if (calEvLink) {
+      actions.appendChild(actionBtn(calEvLink, 'Add to Calendar', 'far fa-calendar-plus'));
+    } else {
+      actions.appendChild(actionBtn(d.calLink, 'Check calendar', 'far fa-calendar-alt'));
+    }
+    row.appendChild(actions);
+    parent.appendChild(row);
+  }
+
+  function runFallback(reason) {
+    if (reason === 'error') {
+      if (fbSublabel) fbSublabel.textContent = 'Typical schedule (calendar unavailable)';
+      if (fbMessage) {
+        fbMessage.textContent = 'Live session data could not be loaded right now. Typical timing is shown below — check the community calendar and mailing list for confirmed sessions.';
+      }
+    } else {
+      if (fbSublabel) fbSublabel.textContent = 'Typical schedule (unconfirmed)';
+      if (fbMessage) {
+        fbMessage.textContent = 'No upcoming sessions found on the community calendar yet. Exact timing depends on available leads — check the calendar and mailing list.';
+      }
+    }
+    show(fallbackEl);
+  }
+
+  if (!d.apiKey) { runFallback('error'); return; }
+
+  var now = new Date();
+  var timeMin = new Date(now.getTime() - 86400000).toISOString();
+  var url = 'https://www.googleapis.com/calendar/v3/calendars/'
+    + encodeURIComponent(d.calendarId)
+    + '/events?key=' + encodeURIComponent(d.apiKey)
+    + '&timeMin=' + encodeURIComponent(timeMin)
+    + '&q=' + encodeURIComponent(d.searchQuery)
+    + '&orderBy=startTime&singleEvents=true&maxResults=20';
+
+  fetch(url)
+    .then(function (r) {
+      return r.json().then(function (data) {
+        return { ok: r.ok, status: r.status, data: data };
+      });
+    })
+    .then(function (res) {
+      if (!res.ok || (res.data && res.data.error)) {
+        runFallback('error');
+        return;
+      }
+
+      var items = res.data.items;
+      if (!items || !items.length) {
+        runFallback('empty');
+        return;
+      }
+
+      var events = items.filter(function (e) {
+        return e.summary && ncoMatcher.test(e.summary);
+      });
+
+      if (!events.length) {
+        runFallback('empty');
+        return;
+      }
+
+      events.sort(function (a, b) {
+        return eventStart(a) - eventStart(b);
+      });
+
+      var now = new Date();
+      var anchor = null;
+      for (var i = 0; i < events.length; i++) {
+        if (eventEnd(events[i]) > now) {
+          anchor = events[i];
+          break;
+        }
+      }
+
+      if (!anchor) {
+        runFallback('empty');
+        return;
+      }
+
+      var dayKey = utcDayKey(eventStart(anchor));
+      var emeaEvent = null;
+      var amerEvent = null;
+
+      for (var j = 0; j < events.length; j++) {
+        var ev = events[j];
+        if (utcDayKey(eventStart(ev)) !== dayKey) continue;
+        var region = regionOf(ev);
+        if (region === 'emea' && !emeaEvent) emeaEvent = ev;
+        else if (region === 'amer' && !amerEvent) amerEvent = ev;
+      }
+
+      if (!emeaEvent && !amerEvent) {
+        runFallback('empty');
+        return;
+      }
+
+      var dayDate = eventStart(anchor);
+      dateHeader.style.display = '';
+      dateEl.textContent = dayDate.toLocaleDateString(undefined, {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      while (gridEl.firstChild) gridEl.removeChild(gridEl.firstChild);
+      appendRow(gridEl, emeaEvent, 'emea', now);
+      appendRow(gridEl, amerEvent, 'amer', now);
+      show(cardEl);
+    })
+    .catch(function () { runFallback('error'); });
+})();
+</script>
