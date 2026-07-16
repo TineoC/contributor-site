@@ -1,10 +1,10 @@
 /* Shared meta panel: bordered container + labeled sections */
 .metadata-container {
-  background-color: #fff;
-  border: 1px solid #e0e4e8;
+  background-color: $white;
+  border: 1px solid $slate-200;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 12px rgba($slate-900, 0.03);
 }
 
 .metadata-grid {
@@ -21,11 +21,11 @@
   position: relative;
 
   &.border-start-refined {
-    border-left: 1px solid #e0e4e8;
+    border-left: 1px solid $slate-200;
 
     @media (max-width: 991px) {
       border-left: none;
-      border-top: 1px solid #e0e4e8;
+      border-top: 1px solid $slate-200;
     }
   }
 }
@@ -35,7 +35,7 @@
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  color: #8a94a6;
+  color: $slate-400;
   margin-bottom: 2rem;
   display: block;
   font-weight: 600;
@@ -46,7 +46,7 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #a0aec0;
+  color: $slate-400;
   margin-bottom: 0.75rem;
   font-weight: 600;
 }
