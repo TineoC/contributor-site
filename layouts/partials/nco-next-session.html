@@ -6,8 +6,10 @@
   {{ end }}
 {{ end }}
 
-{{ $calPage := .Site.GetPage "resources/community-calendar.md" }}
-{{ $calLink := $calPage.RelPermalink | default "/resources/calendar/" }}
+{{ $calLink := "/resources/calendar/" }}
+{{ with .Site.GetPage "resources/community-calendar" }}
+  {{ $calLink = .RelPermalink }}
+{{ end }}
 {{ $nco := .Site.Data.nco }}
 
 {{ $ncoData := dict
@@ -21,7 +23,8 @@
 
 <div class="metadata-container nco-container my-4" id="nco-root" data-nco='{{ $ncoData | jsonify }}' aria-label="Kubernetes New Contributor Orientation">
 
-  <div class="d-flex flex-column align-items-center justify-content-center py-5" id="nco-loading" aria-live="polite">
+  {{/* Loading is hidden until JS runs so no-JS users keep the static fallback. */}}
+  <div class="d-none flex-column align-items-center justify-content-center py-5" id="nco-loading" aria-live="polite">
     <div class="nco-loader mb-3"></div>
     <span class="small fw-bold text-uppercase nco-muted">Fetching next session...</span>
   </div>
@@ -29,14 +32,14 @@
   <div class="nco-state d-none" id="nco-card">
     <div class="mb-4" id="nco-date-header">
       <span class="metadata-sublabel">
-        <span class="nco-pulse-dot"></span>Next Session Date
+        <span class="nco-pulse-dot"></span><span id="nco-date-sublabel">Next Session Date</span>
       </span>
       <h3 class="fw-bold h3 mt-1 mb-0" id="nco-date-display">—</h3>
     </div>
     <div class="d-flex flex-column mb-4" id="nco-sessions-grid"></div>
   </div>
 
-  <div class="nco-state d-none" id="nco-fallback">
+  <div class="nco-state" id="nco-fallback">
     <div class="mb-4">
       <span class="metadata-sublabel" id="nco-fallback-sublabel">Typical schedule (unconfirmed)</span>
       <h3 class="fw-bold h3 mt-1 mb-0">{{ $nco.schedule }}</h3>
@@ -133,24 +136,30 @@
 <script>
 (function () {
   var root = document.getElementById('nco-root');
+  if (!root) return;
   var d = JSON.parse(root.dataset.nco);
 
   var loadingEl  = document.getElementById('nco-loading');
   var cardEl     = document.getElementById('nco-card');
   var fallbackEl = document.getElementById('nco-fallback');
   var dateHeader = document.getElementById('nco-date-header');
+  var dateSublabel = document.getElementById('nco-date-sublabel');
   var dateEl     = document.getElementById('nco-date-display');
   var gridEl     = document.getElementById('nco-sessions-grid');
   var fbSublabel = document.getElementById('nco-fallback-sublabel');
   var fbMessage  = document.getElementById('nco-fallback-message');
 
-  var ncoMatcher = /new contributor orientation|nco/i;
+  var ncoMatcher = /new contributor orientation|\bnco\b/i;
   var JOIN_HOSTS = ['zoom.us', 'meet.google.com'];
   var CAL_HOSTS = ['google.com', 'calendar.google.com'];
 
   function show(el) {
-    [loadingEl, cardEl, fallbackEl].forEach(function (e) { e.classList.add('d-none'); });
+    [loadingEl, cardEl, fallbackEl].forEach(function (e) {
+      e.classList.add('d-none');
+      e.classList.remove('d-flex');
+    });
     el.classList.remove('d-none');
+    if (el === loadingEl) el.classList.add('d-flex');
   }
 
   function el(tag, className) {
@@ -178,7 +187,7 @@
     if (!raw || typeof raw !== 'string') return '';
     try {
       var u = new URL(raw);
-      if (u.protocol !== 'http:' && u.protocol !== 'https:') return '';
+      if (u.protocol !== 'https:') return '';
       if (allowedHosts && !hostAllowed(u.hostname, allowedHosts)) return '';
       return u.href;
     } catch (e) {
@@ -214,7 +223,7 @@
     if (ev.location) candidates.push(ev.location);
     if (ev.hangoutLink) candidates.push(ev.hangoutLink);
     if (ev.description) {
-      var re = /https?:\/\/[^\s"'<>]+/gi;
+      var re = /https:\/\/[^\s"'<>]+/gi;
       var m;
       while ((m = re.exec(ev.description)) !== null) {
         candidates.push(m[0].replace(/[.,);]+$/, ''));
@@ -238,7 +247,7 @@
     return a;
   }
 
-  function appendRow(parent, ev, region, now) {
+  function appendRow(parent, ev, region, now, showDate) {
     var isEMEA = region === 'emea';
     var label = isEMEA ? d.emeaLabel : d.amerLabel;
     var iconClass = isEMEA ? 'fas fa-globe-europe' : 'fas fa-globe-americas';
@@ -271,7 +280,11 @@
     var joinLink = ended ? '' : extractJoinLink(ev);
     var calEvLink = safeHttpUrl(ev.htmlLink || '', CAL_HOSTS);
 
-    var timeStr = start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    var timeStr = '';
+    if (showDate) {
+      timeStr = start.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) + ' \u00b7 ';
+    }
+    timeStr += start.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
     if (ev.end) {
       timeStr += ' - ' + end.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
     } else {
@@ -331,6 +344,8 @@
 
   if (!d.apiKey) { runFallback('error'); return; }
 
+  show(loadingEl);
+
   var now = new Date();
   var timeMin = new Date(now.getTime() - 86400000).toISOString();
   var url = 'https://www.googleapis.com/calendar/v3/calendars/'
@@ -372,29 +387,16 @@
       });
 
       var now = new Date();
-      var anchor = null;
-      for (var i = 0; i < events.length; i++) {
-        if (eventEnd(events[i]) > now) {
-          anchor = events[i];
-          break;
-        }
-      }
-
-      if (!anchor) {
-        runFallback('empty');
-        return;
-      }
-
-      var dayKey = utcDayKey(eventStart(anchor));
       var emeaEvent = null;
       var amerEvent = null;
 
       for (var j = 0; j < events.length; j++) {
         var ev = events[j];
-        if (utcDayKey(eventStart(ev)) !== dayKey) continue;
+        if (eventEnd(ev) <= now) continue;
         var region = regionOf(ev);
         if (region === 'emea' && !emeaEvent) emeaEvent = ev;
         else if (region === 'amer' && !amerEvent) amerEvent = ev;
+        if (emeaEvent && amerEvent) break;
       }
 
       if (!emeaEvent && !amerEvent) {
@@ -402,15 +404,32 @@
         return;
       }
 
-      var dayDate = eventStart(anchor);
-      dateHeader.style.display = '';
-      dateEl.textContent = dayDate.toLocaleDateString(undefined, {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      });
+      var sameDay = false;
+      var headerDate = null;
+      if (emeaEvent && amerEvent) {
+        sameDay = utcDayKey(eventStart(emeaEvent)) === utcDayKey(eventStart(amerEvent));
+        headerDate = eventStart(emeaEvent) < eventStart(amerEvent)
+          ? eventStart(emeaEvent)
+          : eventStart(amerEvent);
+      } else {
+        sameDay = true;
+        headerDate = eventStart(emeaEvent || amerEvent);
+      }
+
+      if (dateHeader) dateHeader.style.display = '';
+      if (sameDay) {
+        if (dateSublabel) dateSublabel.textContent = 'Next Session Date';
+        dateEl.textContent = headerDate.toLocaleDateString(undefined, {
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+      } else {
+        if (dateSublabel) dateSublabel.textContent = 'Upcoming Sessions';
+        dateEl.textContent = 'Different dates — see each region below';
+      }
 
       while (gridEl.firstChild) gridEl.removeChild(gridEl.firstChild);
-      appendRow(gridEl, emeaEvent, 'emea', now);
-      appendRow(gridEl, amerEvent, 'amer', now);
+      appendRow(gridEl, emeaEvent, 'emea', now, !sameDay);
+      appendRow(gridEl, amerEvent, 'amer', now, !sameDay);
       show(cardEl);
     })
     .catch(function () { runFallback('error'); });

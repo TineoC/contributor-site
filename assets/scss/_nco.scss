@@ -239,3 +239,32 @@
   color: $primary;
   transform: translateY(-1px);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .nco-pulse-dot,
+  .nco-loader,
+  .nco-state {
+    animation: none;
+  }
+
+  .nco-session-row,
+  .nco-globe-icon-wrapper,
+  .nco-session-link,
+  .nco-session-title-text,
+  .nco-session-time-text,
+  .nco-action-btn,
+  .nco-connected-link,
+  .nco-connected-link i,
+  .nco-footer-btn {
+    transition: none;
+  }
+
+  .nco-session-row:hover .nco-globe-icon-wrapper {
+    transform: none;
+  }
+
+  .nco-action-btn:hover,
+  .nco-footer-btn:hover {
+    transform: none;
+  }
+}

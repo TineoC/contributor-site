@@ -46,7 +46,7 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: $slate-400;
+  color: $slate-300; // lighter than .metadata-label for hierarchy
   margin-bottom: 0.75rem;
   font-weight: 600;
 }
