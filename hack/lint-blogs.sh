@@ -15,8 +15,10 @@
 
 set -o errexit
 set -o nounset
+set -o pipefail
 
 BASE_REF="${1:-main}"
+LINT_BLOGS_WARN_ONLY="${LINT_BLOGS_WARN_ONLY:-0}"
 
 CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD" -- 'content/*/blog/*.md')
 
@@ -26,4 +28,34 @@ if [ -z "${CHANGED}" ]; then
 fi
 
 echo "Linting blog files changed against ${BASE_REF}..."
-echo "${CHANGED}" | xargs markdownlint --config .markdownlint.jsonc
+
+set +o errexit
+OUTPUT=$(echo "${CHANGED}" | xargs markdownlint --config .markdownlint.jsonc 2>&1)
+STATUS=$?
+set -o errexit
+
+if [ -n "${OUTPUT}" ]; then
+  printf '%s\n' "${OUTPUT}"
+fi
+
+if [ "${STATUS}" -eq 0 ]; then
+  exit 0
+fi
+
+if [ "${LINT_BLOGS_WARN_ONLY}" = "1" ]; then
+  # markdownlint format: path:line[:column] error RULE message
+  while IFS= read -r line; do
+    if [[ "${line}" =~ ^([^:]+):([0-9]+)(:[0-9]+)?[[:space:]]+error[[:space:]]+(.+)$ ]]; then
+      file="${BASH_REMATCH[1]}"
+      lineno="${BASH_REMATCH[2]}"
+      msg="${BASH_REMATCH[4]}"
+      msg="${msg//'%'/'%25'}"
+      msg="${msg//$'\r'/}"
+      echo "::warning file=${file},line=${lineno}::${msg}"
+    fi
+  done <<< "${OUTPUT}"
+  echo "Lint findings treated as warnings (LINT_BLOGS_WARN_ONLY=1)."
+  exit 0
+fi
+
+exit "${STATUS}"

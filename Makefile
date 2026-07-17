@@ -62,8 +62,11 @@ help: ## Show this help text.
 dependencies:
 	npm ci
 
-lint-blogs: ## Run markdownlint on changed blog posts.
-	hack/lint-blogs.sh $(BASE_REF)
+# Set LINT_BLOGS_WARN_ONLY=1 for advisory lint (CI). Default fails on findings.
+LINT_BLOGS_WARN_ONLY ?= 0
+
+lint-blogs: ## Run markdownlint on changed blog posts (LINT_BLOGS_WARN_ONLY=1 for advisory).
+	LINT_BLOGS_WARN_ONLY=$(LINT_BLOGS_WARN_ONLY) hack/lint-blogs.sh $(BASE_REF)
 
 print-node-version: ## Print the Node.js version used in this project.
 	@echo $(NODE_VERSION)

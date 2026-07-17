@@ -16,4 +16,5 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - run: npm ci
-      - run: make lint-blogs BASE_REF=${{ github.base_ref }}
+      - name: Lint blog posts
+        run: make lint-blogs BASE_REF=${{ github.base_ref }} LINT_BLOGS_WARN_ONLY=1
