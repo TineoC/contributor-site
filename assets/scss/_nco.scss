@@ -16,69 +16,16 @@
   color: $slate-500;
 }
 
-.nco-pulse-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: $primary;
-  border-radius: 50%;
-  margin-right: 0.45rem;
-  vertical-align: middle;
-  animation: nco-pulse 2s infinite ease-in-out;
-}
-
-@keyframes nco-pulse {
-  0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba($primary, 0.4); }
-  50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 4px rgba($primary, 0); }
-  100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba($primary, 0); }
-}
-
-.nco-loader {
-  width: 28px;
-  height: 28px;
-  border: 3px solid $slate-100;
-  border-top-color: $primary;
-  border-radius: 50%;
-  animation: nco-spin 0.8s linear infinite;
-}
-
-@keyframes nco-spin {
-  to { transform: rotate(360deg); }
-}
-
-.nco-state {
-  animation: nco-fade-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes nco-fade-in {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .nco-session-row {
   border-bottom: 1px solid $slate-100;
-  transition: all 0.2s ease;
   margin-left: -0.5rem;
   margin-right: -0.5rem;
   padding: 0.5rem;
   border-radius: 8px;
 }
 
-.nco-session-row:hover {
-  background-color: $slate-50;
-  border-color: transparent;
-}
-
 .nco-session-row:last-child {
   border-bottom: none;
-}
-
-.nco-session-row--unconfirmed {
-  opacity: 0.85;
-}
-
-.nco-session-row--unconfirmed .nco-session-title-text {
-  font-weight: 600;
 }
 
 .nco-globe-icon-wrapper {
@@ -91,65 +38,39 @@
   background-color: $primary-soft;
   color: $primary;
   font-size: 1.1rem;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nco-session-row:hover .nco-globe-icon-wrapper {
-  background-color: $primary;
-  color: $white;
-  transform: rotate(12deg);
-}
-
-.nco-session-link:link,
-.nco-session-link:visited {
-  color: inherit;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  flex-grow: 1;
-  text-decoration: none;
 }
 
 .nco-session-title-text {
   font-size: 0.95rem;
   color: $slate-800;
-  transition: color 0.2s ease;
-}
-
-.nco-session-link:hover .nco-session-title-text {
-  color: $primary;
 }
 
 .nco-session-time-text {
   color: $slate-500;
-  transition: color 0.2s ease;
 }
 
-.nco-session-link:hover .nco-session-time-text {
-  color: $primary;
-  opacity: 0.9;
-}
-
-.nco-action-btn:link,
-.nco-action-btn:visited {
+.nco-primary-cta:link,
+.nco-primary-cta:visited {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: $slate-100;
-  color: $slate-500;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid transparent;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background-color: $primary;
+  color: $white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: center;
   text-decoration: none;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
-.nco-action-btn:hover {
-  background-color: $primary-soft;
-  color: $primary;
-  border-color: $primary-soft-border;
+.nco-primary-cta:hover {
+  background-color: darken($primary, 6%);
+  color: $white;
   transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba($primary, 0.08);
 }
 
 .nco-connected-link:link,
@@ -241,29 +162,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nco-pulse-dot,
-  .nco-loader,
-  .nco-state {
-    animation: none;
-  }
-
-  .nco-session-row,
-  .nco-globe-icon-wrapper,
-  .nco-session-link,
-  .nco-session-title-text,
-  .nco-session-time-text,
-  .nco-action-btn,
+  .nco-primary-cta,
   .nco-connected-link,
   .nco-connected-link i,
   .nco-footer-btn {
     transition: none;
   }
 
-  .nco-session-row:hover .nco-globe-icon-wrapper {
-    transform: none;
-  }
-
-  .nco-action-btn:hover,
+  .nco-primary-cta:hover,
   .nco-footer-btn:hover {
     transform: none;
   }

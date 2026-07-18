@@ -1,74 +1,42 @@
-{{ $apiKey := or (getenv "HUGO_GOOGLE_CALENDAR_API_KEY") .Site.Params.google_calendar_api_key "" }}
-
-{{ if hugo.IsProduction }}
-  {{ if not $apiKey }}
-    {{ errorf "Google Calendar API key is required for production builds (set via HUGO_GOOGLE_CALENDAR_API_KEY environment variable or google_calendar_api_key site parameter)" }}
-  {{ end }}
-{{ end }}
-
+{{ $nco := .Site.Data.nco }}
 {{ $calLink := "/resources/calendar/" }}
 {{ with .Site.GetPage "resources/community-calendar" }}
   {{ $calLink = .RelPermalink }}
 {{ end }}
-{{ $nco := .Site.Data.nco }}
+{{ $calQuery := querify "q" $nco.search_query }}
+{{ $calFiltered := printf "%s?%s" $calLink $calQuery }}
 
-{{ $ncoData := dict
-  "calendarId" $nco.calendar_id
-  "searchQuery" $nco.search_query
-  "regions" $nco.session_times
-  "regionOrder" $nco.region_order
-  "calLink" $calLink
-  "apiKey" $apiKey
-}}
+<div class="metadata-container nco-container my-4" aria-label="{{ $nco.name }}">
 
-<div class="metadata-container nco-container my-4" id="nco-root" data-nco='{{ $ncoData | jsonify }}' aria-label="Kubernetes New Contributor Orientation">
-
-  {{/* Loading is hidden until JS runs so no-JS users keep the static fallback. */}}
-  <div class="d-none flex-column align-items-center justify-content-center py-5" id="nco-loading" aria-live="polite">
-    <div class="nco-loader mb-3"></div>
-    <span class="small fw-bold text-uppercase nco-muted">Fetching next session...</span>
+  <div class="mb-4">
+    <span class="metadata-sublabel">Typical schedule</span>
+    <h3 class="fw-bold h3 mt-1 mb-0">{{ $nco.schedule }}</h3>
+    <p class="small nco-muted mb-0 mt-2">
+      Exact timing depends on available leads. Open the community calendar for the next confirmed session and Zoom link.
+    </p>
   </div>
 
-  <div class="nco-state d-none" id="nco-card">
-    <div class="mb-4" id="nco-date-header">
-      <span class="metadata-sublabel">
-        <span class="nco-pulse-dot"></span><span id="nco-date-sublabel">Next Session Date</span>
-      </span>
-      <h3 class="fw-bold h3 mt-1 mb-0" id="nco-date-display">—</h3>
-    </div>
-    <div class="d-flex flex-column mb-4" id="nco-sessions-grid"></div>
-  </div>
-
-  <div class="nco-state" id="nco-fallback">
-    <div class="mb-4">
-      <span class="metadata-sublabel" id="nco-fallback-sublabel">Typical schedule (unconfirmed)</span>
-      <h3 class="fw-bold h3 mt-1 mb-0">{{ $nco.schedule }}</h3>
-      <p class="small nco-muted mb-0 mt-2" id="nco-fallback-message">
-        No upcoming sessions found on the community calendar yet.
-        Exact timing depends on available leads — check the calendar and mailing list.
-      </p>
-    </div>
-
-    <div class="d-flex flex-column mb-4">
-      {{ range $key := $nco.region_order }}
-      {{ with index $nco.session_times $key }}
-      <div class="nco-session-row nco-session-row--unconfirmed d-flex align-items-center justify-content-between gap-3">
-        <div class="d-flex align-items-center gap-3 flex-grow-1">
-          <div class="nco-globe-icon-wrapper">
-            <i class="{{ .icon }}" aria-hidden="true"></i>
-          </div>
-          <div>
-            <div class="nco-session-title-text fw-bold">{{ .label }}</div>
-            <div class="nco-session-time-text small">{{ .timezone_string }}</div>
-          </div>
-        </div>
-        <a href="{{ $calLink }}" target="_blank" rel="noopener" class="nco-action-btn" aria-label="Check calendar" title="Check calendar">
-          <i class="far fa-calendar-alt" aria-hidden="true"></i>
-        </a>
+  <div class="d-flex flex-column mb-4">
+    {{ range $key := $nco.region_order }}
+    {{ with index $nco.session_times $key }}
+    <div class="nco-session-row d-flex align-items-center gap-3">
+      <div class="nco-globe-icon-wrapper">
+        <i class="{{ .icon }}" aria-hidden="true"></i>
       </div>
-      {{ end }}
-      {{ end }}
+      <div>
+        <div class="nco-session-title-text fw-bold">{{ .label }}</div>
+        <div class="nco-session-time-text small">{{ .timezone_string }}</div>
+      </div>
     </div>
+    {{ end }}
+    {{ end }}
+  </div>
+
+  <div class="mb-4">
+    <a href="{{ $calFiltered }}" class="nco-primary-cta">
+      <i class="far fa-calendar-alt" aria-hidden="true"></i>
+      Find the next session on the community calendar
+    </a>
   </div>
 
   <div class="pt-4 nco-connected-section">
@@ -111,7 +79,7 @@
       <a href="{{ $nco.links.youtube_playlist }}" target="_blank" rel="noopener" class="nco-footer-btn">
         <i class="fab fa-youtube" aria-hidden="true"></i> Recordings
       </a>
-      <a href="{{ $calLink }}" target="_blank" rel="noopener" class="nco-footer-btn">
+      <a href="{{ $calFiltered }}" class="nco-footer-btn">
         <i class="far fa-calendar-alt" aria-hidden="true"></i> Calendar
       </a>
       <a href="{{ $nco.links.slide_deck }}" target="_blank" rel="noopener" class="nco-footer-btn">
@@ -121,6 +89,3 @@
   </div>
 
 </div>
-
-{{ $js := resources.Get "js/nco-next-session.js" | minify | fingerprint }}
-<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

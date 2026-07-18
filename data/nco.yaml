@@ -1,8 +1,6 @@
 # Typical NCO cadence and times (guidance only).
-# Confirmed next-session date/time/Zoom come from Google Calendar events.
-# Do NOT treat these values as proof that a given month's EMEA or AMER session exists.
+# Confirmed dates and Zoom links live on the community calendar.
 name: "Kubernetes New Contributor Orientation"
-calendar_id: "calendar@kubernetes.io"
 search_query: "New Contributor Orientation"
 schedule: "Third Tuesday of every month"
 region_order:
@@ -11,12 +9,10 @@ region_order:
 session_times:
   emea:
     label: "EMEA/APAC-friendly"
-    short: "EMEA/APAC"
     icon: "fas fa-globe-europe"
     timezone_string: "1:30 PT / 8:30 UTC / 10:30 CET / 14:00 IST"
   amer:
     label: "AMER-friendly"
-    short: "AMER"
     icon: "fas fa-globe-americas"
     timezone_string: "8:30 PT / 15:30 UTC / 17:30 CET / 21:00 IST"
 links:
