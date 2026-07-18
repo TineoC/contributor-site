@@ -1,7 +1,6 @@
 (function () {
   var root = document.getElementById('nco-root');
   if (!root) return;
-  var config = JSON.parse(root.dataset.nco);
 
   var loadingEl = document.getElementById('nco-loading');
   var cardEl = document.getElementById('nco-card');
@@ -13,10 +12,6 @@
   var fallbackSublabel = document.getElementById('nco-fallback-sublabel');
   var fallbackMessage = document.getElementById('nco-fallback-message');
 
-  var ncoMatcher = /new contributor orientation|\bnco\b/i;
-  var JOIN_HOSTS = ['zoom.us', 'meet.google.com'];
-  var CAL_HOSTS = ['google.com', 'calendar.google.com'];
-
   function show(target) {
     [loadingEl, cardEl, fallbackEl].forEach(function (e) {
       e.classList.add('d-none');
@@ -25,6 +20,35 @@
     target.classList.remove('d-none');
     if (target === loadingEl) target.classList.add('d-flex');
   }
+
+  function runFallback(reason) {
+    if (reason === 'error') {
+      if (fallbackSublabel) fallbackSublabel.textContent = 'Typical schedule (calendar unavailable)';
+      if (fallbackMessage) {
+        fallbackMessage.textContent = 'Live session data could not be loaded right now. Typical timing is shown below — check the community calendar and mailing list for confirmed sessions.';
+      }
+    } else {
+      if (fallbackSublabel) fallbackSublabel.textContent = 'Typical schedule (unconfirmed)';
+      if (fallbackMessage) {
+        fallbackMessage.textContent = 'No upcoming sessions found on the community calendar yet. Exact timing depends on available leads — check the calendar and mailing list.';
+      }
+    }
+    show(fallbackEl);
+  }
+
+  var config;
+  try {
+    config = JSON.parse(root.dataset.nco);
+  } catch (e) {
+    runFallback('error');
+    return;
+  }
+
+  var ncoMatcher = /new contributor orientation|\bnco\b/i;
+  var JOIN_HOSTS = ['zoom.us', 'meet.google.com'];
+  // Google Calendar htmlLink hosts only (not a broad *.google.com allowlist).
+  var CAL_HOSTS = ['www.google.com', 'calendar.google.com'];
+  var FETCH_TIMEOUT_MS = 10000;
 
   function createEl(tag, className) {
     var node = document.createElement(tag);
@@ -110,6 +134,11 @@
     return a;
   }
 
+  function regionOrder() {
+    if (config.regionOrder && config.regionOrder.length) return config.regionOrder;
+    return ['emea', 'amer'];
+  }
+
   function appendRow(parent, ev, region, now) {
     var meta = (config.regions && config.regions[region]) || {};
     var label = meta.label || region;
@@ -188,21 +217,6 @@
     parent.appendChild(row);
   }
 
-  function runFallback(reason) {
-    if (reason === 'error') {
-      if (fallbackSublabel) fallbackSublabel.textContent = 'Typical schedule (calendar unavailable)';
-      if (fallbackMessage) {
-        fallbackMessage.textContent = 'Live session data could not be loaded right now. Typical timing is shown below — check the community calendar and mailing list for confirmed sessions.';
-      }
-    } else {
-      if (fallbackSublabel) fallbackSublabel.textContent = 'Typical schedule (unconfirmed)';
-      if (fallbackMessage) {
-        fallbackMessage.textContent = 'No upcoming sessions found on the community calendar yet. Exact timing depends on available leads — check the calendar and mailing list.';
-      }
-    }
-    show(fallbackEl);
-  }
-
   if (!config.apiKey) {
     runFallback('error');
     return;
@@ -219,10 +233,18 @@
     + '&q=' + encodeURIComponent(config.searchQuery)
     + '&orderBy=startTime&singleEvents=true&maxResults=20';
 
-  fetch(url)
+  var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  var timeoutId = null;
+  if (controller) {
+    timeoutId = setTimeout(function () { controller.abort(); }, FETCH_TIMEOUT_MS);
+  }
+
+  fetch(url, controller ? { signal: controller.signal } : undefined)
     .then(function (r) {
       return r.json().then(function (data) {
         return { ok: r.ok, data: data };
+      }, function () {
+        return { ok: false, data: { error: { message: 'invalid json' } } };
       });
     })
     .then(function (res) {
@@ -253,10 +275,10 @@
       var now = new Date();
       var anchor = null;
       for (var i = 0; i < events.length; i++) {
-        if (eventEnd(events[i]) > now) {
-          anchor = events[i];
-          break;
-        }
+        if (eventEnd(events[i]) <= now) continue;
+        if (!regionOf(events[i])) continue;
+        anchor = events[i];
+        break;
       }
 
       if (!anchor) {
@@ -265,15 +287,26 @@
       }
 
       var dayKey = utcDayKey(eventStart(anchor));
-      var byRegion = { emea: null, amer: null };
+      var byRegion = {};
+      var order = regionOrder();
+      for (var r = 0; r < order.length; r++) {
+        byRegion[order[r]] = null;
+      }
+
       for (var j = 0; j < events.length; j++) {
         var ev = events[j];
         if (utcDayKey(eventStart(ev)) !== dayKey) continue;
         var region = regionOf(ev);
-        if (region && !byRegion[region]) byRegion[region] = ev;
+        if (region && Object.prototype.hasOwnProperty.call(byRegion, region) && !byRegion[region]) {
+          byRegion[region] = ev;
+        }
       }
 
-      if (!byRegion.emea && !byRegion.amer) {
+      var hasAny = false;
+      for (var k = 0; k < order.length; k++) {
+        if (byRegion[order[k]]) { hasAny = true; break; }
+      }
+      if (!hasAny) {
         runFallback('empty');
         return;
       }
@@ -285,9 +318,13 @@
       });
 
       while (gridEl.firstChild) gridEl.removeChild(gridEl.firstChild);
-      appendRow(gridEl, byRegion.emea, 'emea', now);
-      appendRow(gridEl, byRegion.amer, 'amer', now);
+      for (var n = 0; n < order.length; n++) {
+        appendRow(gridEl, byRegion[order[n]], order[n], now);
+      }
       show(cardEl);
     })
-    .catch(function () { runFallback('error'); });
+    .catch(function () { runFallback('error'); })
+    .then(function () {
+      if (timeoutId) clearTimeout(timeoutId);
+    });
 })();

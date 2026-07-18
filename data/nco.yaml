@@ -5,6 +5,9 @@ name: "Kubernetes New Contributor Orientation"
 calendar_id: "calendar@kubernetes.io"
 search_query: "New Contributor Orientation"
 schedule: "Third Tuesday of every month"
+region_order:
+  - emea
+  - amer
 session_times:
   emea:
     label: "EMEA/APAC-friendly"

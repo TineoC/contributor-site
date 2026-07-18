@@ -14,6 +14,7 @@ This file needs to be removed once Docsy has been updated to 0.10.0.
 		{{ end -}}
 	</header>
 
+	{{/* Orientation content is synced from kubernetes/community (no site front matter). Path gate is intentional. */}}
 	{{ if eq .CurrentSection.RelPermalink "/docs/orientation/" }}
 		{{ partial "nco-next-session.html" . }}
 	{{ end }}
