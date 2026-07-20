@@ -86,8 +86,35 @@
                 <a href="{{ . }}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> {{ . }}</a>
               {{- else if and (strings.HasPrefix . "/") (not (strings.Contains . "[")) -}}
                 <a href="https://github.com/kubernetes/enhancements/tree/master{{ . }}" target="_blank" rel="noopener"><i class="fab fa-github"></i> {{ . }}</a>
-              {{- else -}}
+              {{- else if strings.Contains . "[" -}}
                 {{ . | markdownify }}
+              {{- else -}}
+                {{- /* Bare reference without a leading "/" — either a repo-relative KEP path
+                      (e.g. "keps/sig-node/4569-.../README.md") or free text like "KEP-32"/"TBD".
+                      Resolve a KEP number out of it and link straight to that KEP's own page;
+                      degrade to a normalized GitHub link or plain text if we can't. */ -}}
+                {{- $entry := . -}}
+                {{- $num := replaceRE `.*keps/[^/]+/([0-9]+)-.*` "${1}" $entry -}}
+                {{- if eq $num $entry -}}
+                  {{- $num = replaceRE `(?i).*\bkep[\s-]*([0-9]+)\b.*` "${1}" $entry -}}
+                {{- end -}}
+                {{- $lookupNum := "" -}}
+                {{- if ne $num $entry -}}
+                  {{- $lookupNum = strings.TrimLeft "0" $num -}}
+                {{- end -}}
+                {{- $relatedPage := "" -}}
+                {{- if $lookupNum -}}
+                  {{- $relatedPage = $.Site.GetPage (printf "resources/keps/%s" $lookupNum) -}}
+                {{- end -}}
+                {{- if $relatedPage -}}
+                  <a href="{{ $relatedPage.RelPermalink }}"><i class="fas fa-link"></i> KEP-{{ $lookupNum }}: {{ $relatedPage.Title }}</a>
+                {{- else if strings.Contains $entry "keps/" -}}
+                  {{- $githubPath := $entry -}}
+                  {{- if not (strings.HasPrefix $githubPath "/") -}}{{- $githubPath = printf "/%s" $githubPath -}}{{- end -}}
+                  <a href="https://github.com/kubernetes/enhancements/tree/master{{ $githubPath }}" target="_blank" rel="noopener"><i class="fab fa-github"></i> {{ $entry }}</a>
+                {{- else -}}
+                  {{ $entry | markdownify }}
+                {{- end -}}
               {{- end -}}
             </li>
             {{ end }}
